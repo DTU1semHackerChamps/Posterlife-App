@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/emilb/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_posterlife_logo_sort_svg.xml" value="0.2703125" />
+        <entry key="..\:/Users/emilb/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1" />
+        <entry key="..\:/Users/emilb/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout-w936dp/activity_login.xml" value="0.1" />
+        <entry key="..\:/Users/emilb/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/emilb/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/emilb/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/activity_register.xml" value="0.16077898550724637" />
       </map>
     </option>
   </component>
