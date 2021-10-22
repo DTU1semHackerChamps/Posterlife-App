@@ -15,5 +15,15 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        backArrow.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        loginScreenBtn.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }
