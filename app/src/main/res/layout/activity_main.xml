@@ -57,4 +57,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_posterlife_logo_sort_svg" />
 
+    <Button
+        android:id="@+id/notnow"
+        android:layout_width="254dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="132dp"
+        tools:layout_editor_absoluteX="78dp"
+        tools:layout_editor_absoluteY="556dp"
+        android:background="@color/white"
+        android:text="@string/not_now"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
