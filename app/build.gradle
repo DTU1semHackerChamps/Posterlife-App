@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
 }
 
-apply plugin: "kotlin-android-extensions"
 
 android {
     compileSdk 31
@@ -36,7 +35,7 @@ android {
         useIR = true
     }
     buildFeatures {
-        viewBinding true
+        //viewBinding = true
         compose true
     }
     composeOptions {
