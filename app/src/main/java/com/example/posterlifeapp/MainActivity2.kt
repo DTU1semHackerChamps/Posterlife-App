@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +18,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 import org.w3c.dom.Text
 
@@ -37,9 +44,12 @@ class MainActivity2 : ComponentActivity() {
 
 @Composable
 fun MainScreen() {
+    val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar()},
-        bottomBar = { BottomNaigationBar()}) {
+        bottomBar = { BottomNaigationBar(navController)}
+    ) {
+        Navigation(navController)
 
     }
 }
@@ -96,7 +106,7 @@ fun TopBarPreview() {
 }
 
 @Composable
-fun BottomNaigationBar(){
+fun BottomNaigationBar(navController: NavController){
     val items = listOf(
         NavigationItem.Inspiration,
         NavigationItem.Profile,
@@ -106,6 +116,8 @@ fun BottomNaigationBar(){
         backgroundColor = colorResource(id = R.color.design_default_color_primary),
         contentColor = Color.White
     ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
         items.forEach{ item ->
             BottomNavigationItem(
                 icon = {Icon(painterResource(id = item.icon), contentDescription = item.title)},
@@ -113,8 +125,20 @@ fun BottomNaigationBar(){
                 selectedContentColor = Color.White,
                 unselectedContentColor = Color.White.copy(0.4f),
                 alwaysShowLabel = true,
-                selected = false,
-                onClick = { /*TODO*/ })
+                selected = currentRoute == item.route,
+                onClick = {
+                    navController.navigate(item.route) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route){
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+
+                }
+            )
         }
     }
 }
@@ -122,6 +146,22 @@ fun BottomNaigationBar(){
 @Preview(showBackground = true)
 @Composable
 fun BottomNavigationBarPreview() {
-    BottomNaigationBar()
+    //BottomNaigationBar()
+}
+
+@Composable
+fun Navigation(navController: NavHostController) {
+    NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
+        composable(NavigationItem.Inspiration.route) {
+            InspirationScreen()
+        }
+        composable(NavigationItem.Profile.route) {
+            ProfileScreen()
+        }
+        composable(NavigationItem.Share.route) {
+            ShareScreen()
+        }
+
+    }
 }
 
