@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PosterLifeApp">
         <activity
+            android:name=".MainActivity2"
+            android:exported="true"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/Theme.PosterLifeApp.NoActionBar" />
+        <activity
             android:name=".HomeActivity"
             android:exported="true" />
         <activity
