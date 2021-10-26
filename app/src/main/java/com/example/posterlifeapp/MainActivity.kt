@@ -21,8 +21,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         notnow.setOnClickListener {
-            val intent = intent(this, )
+            val intent = Intent(this, InspirationActivity::class.java)
+            startActivity(intent)
         }
+
+
 
     }
 }
