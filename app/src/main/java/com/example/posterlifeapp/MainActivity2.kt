@@ -1,15 +1,19 @@
 package com.example.posterlifeapp
 
+import android.content.Intent
 import android.os.Bundle
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -48,8 +52,9 @@ class MainActivity2 : ComponentActivity() {
 fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
-        topBar = { TopBar()},
-        bottomBar = { BottomNaigationBar(navController)}
+        topBar = { TopBar() },
+        bottomBar = { BottomNaigationBar(navController) },
+        floatingActionButton = { NewPosterButton() }
     ) {
         Navigation(navController)
 
@@ -149,6 +154,16 @@ fun BottomNaigationBar(navController: NavController){
 @Composable
 fun BottomNavigationBarPreview() {
     //BottomNaigationBar()
+}
+
+@Composable
+fun NewPosterButton(){
+    val context = LocalContext.current
+    ExtendedFloatingActionButton(
+        text = {  Text(text = "Ny Poster") },
+        onClick = {context.startActivity(Intent(context, CameraActivity::class.java))},
+        icon ={ Icon(Icons.Filled.Add,"")}
+    )
 }
 
 @Composable
