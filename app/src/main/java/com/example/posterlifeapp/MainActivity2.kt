@@ -2,6 +2,7 @@ package com.example.posterlifeapp
 
 import android.content.res.Resources
 import android.os.Bundle
+
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -27,7 +28,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 
+typealias LumaListener = (luma: Double) -> Unit
+
+
 class MainActivity2 : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -155,6 +160,7 @@ fun Navigation(navController: NavHostController) {
     NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
         composable(NavigationItem.Inspiration.route) {
             InspirationScreen()
+
         }
         composable(NavigationItem.Profile.route) {
             ProfileScreen()
