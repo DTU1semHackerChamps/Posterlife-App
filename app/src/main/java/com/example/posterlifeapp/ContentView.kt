@@ -6,6 +6,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,6 +40,7 @@ fun InspirationScreen(){
     }
 
 
+
 }
 
 @Composable
@@ -58,11 +62,9 @@ fun SinglePicAndText(imageID: Int, title: String) {
                 fontSize = 25.sp
             )
         }
-
     }
-
-
 }
+
 
 @Preview(showBackground = true)
 @Composable

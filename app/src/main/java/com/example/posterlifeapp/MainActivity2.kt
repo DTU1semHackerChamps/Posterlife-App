@@ -1,10 +1,13 @@
 package com.example.posterlifeapp
 
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -44,7 +47,8 @@ fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
         topBar = { TopBar()},
-        bottomBar = { BottomNaigationBar(navController)}
+        bottomBar = { BottomNaigationBar(navController)},
+        floatingActionButton = { NewPoster()}
     ) {
         Navigation(navController)
 
@@ -57,23 +61,12 @@ fun MainScreenPreview(){
     MainScreen()
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    PosterLifeAppTheme {
-        Greeting("Android")
-    }
-}
 
 @Composable
 fun TopBar() {
     TopAppBar(
-        backgroundColor = colorResource(id = R.color.design_default_color_primary),
+        backgroundColor = MaterialTheme.colors.primary,
         contentColor = Color.White,
         modifier = Modifier.fillMaxWidth()
     ){
@@ -110,7 +103,7 @@ fun BottomNaigationBar(navController: NavController){
         NavigationItem.Share
     )
     BottomNavigation(
-        backgroundColor = colorResource(id = R.color.design_default_color_primary),
+        backgroundColor = MaterialTheme.colors.primary,
         contentColor = Color.White
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -145,6 +138,17 @@ fun BottomNaigationBar(navController: NavController){
 fun BottomNavigationBarPreview() {
     //BottomNaigationBar()
 }
+
+@Composable
+fun NewPoster(){
+    ExtendedFloatingActionButton(
+        text = { Text(text = "Ny Plakat") },
+        onClick = { /*TODO*/ },
+        icon ={ Icon(Icons.Filled.Add,"")}
+    )
+
+}
+
 
 @Composable
 fun Navigation(navController: NavHostController) {
