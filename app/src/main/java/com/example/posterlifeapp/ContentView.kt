@@ -70,21 +70,22 @@ fun InspirationScreenPreview(){
 
 @Composable
 fun ProfileScreen(){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.Red)
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-            text = "Profile View",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
-        )
-    }
+
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(color = Color.Red)
+//            .wrapContentSize(Alignment.Center)
+//    ) {
+//        Text(
+//            text = "Profile View",
+//            fontWeight = FontWeight.Bold,
+//            color = Color.White,
+//            modifier = Modifier.align(Alignment.CenterHorizontally),
+//            textAlign = TextAlign.Center,
+//            fontSize = 25.sp
+//        )
+//    }
 }
 
 @Preview(showBackground = true)
