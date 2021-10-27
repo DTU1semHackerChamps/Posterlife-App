@@ -1,6 +1,7 @@
 package com.example.posterlifeapp
 
 import android.content.res.Resources
+import android.content.Intent
 import android.os.Bundle
 
 import androidx.activity.ComponentActivity
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -53,7 +55,7 @@ fun MainScreen() {
     Scaffold(
         topBar = { TopBar()},
         bottomBar = { BottomNaigationBar(navController)},
-        floatingActionButton = { NewPoster()}
+        floatingActionButton = { NewPosterButton()}
     ) {
         Navigation(navController)
 
@@ -145,10 +147,11 @@ fun BottomNavigationBarPreview() {
 }
 
 @Composable
-fun NewPoster(){
+fun NewPosterButton(){
+    val context = LocalContext.current
     ExtendedFloatingActionButton(
         text = { Text(text = "Ny Plakat") },
-        onClick = { /*TODO*/ },
+        onClick = { context.startActivity(Intent(context, CameraActivity::class.java)) },
         icon ={ Icon(Icons.Filled.Add,"")}
     )
 
