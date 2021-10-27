@@ -3,6 +3,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
     package="com.example.posterlifeapp">
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -39,6 +41,9 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".CameraActivity"
+            android:exported="true"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
