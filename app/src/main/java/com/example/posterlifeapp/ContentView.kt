@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.intellij.lang.annotations.JdkConstants
 
 class ContentView {
 }
@@ -144,7 +145,9 @@ fun SocialList(id: Int, name: String)
 {
 
     Row (modifier = Modifier.height(40.dp)
-        .padding(start = 120.dp)
+        .fillMaxWidth()
+        .padding(20.dp, 0.dp),
+        horizontalArrangement = Arrangement.Start,
     ) {
         Image(
             painter = painterResource(id = id),
