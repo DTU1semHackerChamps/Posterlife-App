@@ -73,23 +73,30 @@ fun InspirationScreenPreview(){
 }
 
 @Composable
-fun ProfileScreen(){
+fun ProfileScreen() {
+    val profilesIC = listOf("Ønskeliste", "Ordrer", "Mine Designs", "Hurtigt køb", "GDPR", "Betalingsoplysninger")
 
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(color = Color.Red)
-//            .wrapContentSize(Alignment.Center)
-//    ) {
-//        Text(
-//            text = "Profile View",
-//            fontWeight = FontWeight.Bold,
-//            color = Color.White,
-//            modifier = Modifier.align(Alignment.CenterHorizontally),
-//            textAlign = TextAlign.Center,
-//            fontSize = 25.sp
-//        )
-//    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.Start
+
+    ) {
+        Divider(
+            thickness = 2.dp,
+            color = Color.Gray
+        )
+        profilesIC.forEach { item ->
+            Text(text = item, Modifier.padding(start = 10.dp))
+
+            Divider(
+                thickness = 2.dp,
+                color = Color.Gray
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
