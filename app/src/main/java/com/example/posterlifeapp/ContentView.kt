@@ -15,8 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.material.Divider
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,21 +73,29 @@ fun InspirationScreenPreview(){
 }
 
 @Composable
-fun ProfileScreen(){
+fun ProfileScreen() {
+    val profilesIC = listOf("Ønskeliste", "Ordrer", "Mine Designs", "Hurtigt køb", "GDPR", "Betalingsoplysninger")
+
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.Red)
-            .wrapContentSize(Alignment.Center)
+            .fillMaxWidth()
+            .padding(top = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.Start
+
     ) {
-        Text(
-            text = "Profile View",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
+        Divider(
+            thickness = 2.dp,
+            color = Color.Gray
         )
+        profilesIC.forEach { item ->
+            Text(text = item, Modifier.padding(start = 10.dp))
+
+            Divider(
+                thickness = 2.dp,
+                color = Color.Gray
+            )
+        }
     }
 }
 
@@ -99,21 +107,56 @@ fun ProfileScreenPreview(){
 
 @Composable
 fun ShareScreen(){
+
+    val itemsIC = listOf(
+        SocialMediaItem.FacebookIC,
+        SocialMediaItem.TwitterIC,
+        SocialMediaItem.Pinterest,
+        SocialMediaItem.InstagramIC,
+        SocialMediaItem.Email
+    )
+
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.Blue)
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-            text = "Share View",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
+            .fillMaxWidth()
+            .padding(top = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(15.dp),
+        horizontalAlignment = Alignment.Start
+        ) {
+
+        Divider(
+            thickness = 2.dp,
+            color = Color.Gray
         )
+        itemsIC.forEach{ item ->
+
+            SocialList(id = item.icon, name = item.title )
+            Divider(
+                thickness = 2.dp,
+                color = Color.Gray
+            )
+        }
+
     }
+}
+@Composable
+fun SocialList(id: Int, name: String)
+{
+
+    Row (modifier = Modifier.height(40.dp)
+        .padding(start = 120.dp)
+    ) {
+        Image(
+            painter = painterResource(id = id),
+            contentDescription = name,
+            modifier = Modifier.size(40.dp)
+        )
+        Spacer(
+            modifier = Modifier.padding(8.dp)
+        )
+        Text(text = name, fontSize = 25.sp)
+    }
+
 }
 
 @Preview(showBackground = true)

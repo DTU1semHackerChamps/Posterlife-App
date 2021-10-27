@@ -1,7 +1,9 @@
 package com.example.posterlifeapp
 
 import android.content.res.Resources
+import android.content.Intent
 import android.os.Bundle
+
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -12,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -27,7 +30,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 
+typealias LumaListener = (luma: Double) -> Unit
+
+
 class MainActivity2 : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -48,7 +55,7 @@ fun MainScreen() {
     Scaffold(
         topBar = { TopBar()},
         bottomBar = { BottomNaigationBar(navController)},
-        floatingActionButton = { NewPoster()}
+        floatingActionButton = { NewPosterButton()}
     ) {
         Navigation(navController)
 
@@ -140,10 +147,11 @@ fun BottomNavigationBarPreview() {
 }
 
 @Composable
-fun NewPoster(){
+fun NewPosterButton(){
+    val context = LocalContext.current
     ExtendedFloatingActionButton(
         text = { Text(text = "Ny Plakat") },
-        onClick = { /*TODO*/ },
+        onClick = { context.startActivity(Intent(context, CameraActivity::class.java)) },
         icon ={ Icon(Icons.Filled.Add,"")}
     )
 
@@ -155,6 +163,7 @@ fun Navigation(navController: NavHostController) {
     NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
         composable(NavigationItem.Inspiration.route) {
             InspirationScreen()
+
         }
         composable(NavigationItem.Profile.route) {
             ProfileScreen()
