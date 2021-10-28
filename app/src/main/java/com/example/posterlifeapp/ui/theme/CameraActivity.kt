@@ -2,6 +2,7 @@ package com.example.posterlifeapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
@@ -39,6 +40,10 @@ class CameraActivity : AppCompatActivity() {
 
         // Set up the listener for take photo button
         camera_capture_button.setOnClickListener { takePhoto() }
+
+        val intent = Intent(this, MainActivity2::class.java)
+
+        cameraBackBtn.setOnClickListener{startActivity(intent)}
 
         outputDirectory = getOutputDirectory()
 
