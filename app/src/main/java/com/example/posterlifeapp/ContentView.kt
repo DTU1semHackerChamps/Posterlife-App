@@ -144,20 +144,20 @@ fun ShareScreen(){
 fun SocialList(id: Int, name: String)
 {
 
-    Row (modifier = Modifier.height(40.dp)
+    Row (modifier = Modifier.height(30.dp)
         .fillMaxWidth()
-        .padding(20.dp, 0.dp),
+        .padding(35.dp, 0.dp),
         horizontalArrangement = Arrangement.Start,
     ) {
         Image(
             painter = painterResource(id = id),
             contentDescription = name,
-            modifier = Modifier.size(40.dp)
+            modifier = Modifier.size(25.dp)
         )
         Spacer(
             modifier = Modifier.padding(8.dp)
         )
-        Text(text = name, fontSize = 25.sp)
+        Text(text = name, fontSize = 20.sp)
     }
 
 }
