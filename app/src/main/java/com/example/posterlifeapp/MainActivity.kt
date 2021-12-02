@@ -29,6 +29,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
+import com.example.posterlifeapp.viewModel.InspirationViewModel
 
 typealias LumaListener = (luma: Double) -> Unit
 
@@ -162,7 +163,7 @@ fun NewPosterButton(){
 fun Navigation(navController: NavHostController) {
     NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
         composable(NavigationItem.Inspiration.route) {
-            InspirationScreen()
+            InspirationScreen(InspirationViewModel())
 
         }
         composable(NavigationItem.Profile.route) {

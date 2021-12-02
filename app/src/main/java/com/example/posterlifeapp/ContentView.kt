@@ -7,37 +7,36 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExtendedFloatingActionButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.material.Divider
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.posterlifeapp.viewModel.InspirationViewModel
 
 class ContentView {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun InspirationScreen(){
+fun InspirationScreen(inspirationViewModel: InspirationViewModel){
     val posters = PosterList()
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
-        modifier = Modifier.padding(bottom = 33.dp)
+        modifier = Modifier.padding(bottom = 50.dp)
     ){
         items(posters.size) { index ->
             SinglePicAndText(imageID = posters[index].poster, title = posters[index].title)
         }
     }
+
 
 
 
@@ -63,13 +62,14 @@ fun SinglePicAndText(imageID: Int, title: String) {
             )
         }
     }
+
 }
 
 
 @Preview(showBackground = true)
 @Composable
 fun InspirationScreenPreview(){
-    InspirationScreen()
+    InspirationScreen(InspirationViewModel())
 }
 
 @Composable
@@ -143,7 +143,8 @@ fun ShareScreen(){
 fun SocialList(id: Int, name: String)
 {
 
-    Row (modifier = Modifier.height(40.dp)
+    Row (modifier = Modifier
+        .height(40.dp)
         .padding(start = 120.dp)
     ) {
         Image(
