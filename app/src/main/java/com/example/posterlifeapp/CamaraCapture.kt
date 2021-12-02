@@ -31,13 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
-
+import com.example.composephoto.util.Permission
 import com.example.posterlifeapp.CameraPreview
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import java.io.File
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import java.security.acl.Permission
+
 
 @ExperimentalPermissionsApi
 @ExperimentalCoroutinesApi

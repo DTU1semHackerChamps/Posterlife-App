@@ -14,12 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PosterLifeApp">
         <activity
-            android:name=".CameraActivityOld"
-            android:exported="true"
-            android:label="@string/title_activity_camera"
-            android:theme="@style/Theme.PosterLifeApp.NoActionBar" />
-        <activity
-            android:name=".MainActivity2"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/title_activity_main2"
             android:theme="@style/Theme.PosterLifeApp.NoActionBar">
@@ -30,24 +25,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
-            android:exported="true" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="true"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".CameraActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
