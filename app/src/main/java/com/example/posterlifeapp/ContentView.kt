@@ -3,20 +3,20 @@ package com.example.posterlifeapp
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExtendedFloatingActionButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.material.Divider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,7 +43,10 @@ fun InspirationScreen(){
 @Composable
 fun SinglePicAndText(imageID: Int, title: String) {
     val image: Painter = painterResource(imageID)
-    Column(modifier = Modifier.padding(4.dp)) {
+    var dialogState = remember { mutableStateOf(false) }
+    Column(modifier = Modifier
+        .padding(4.dp)
+        .clickable { dialogState.value = !dialogState.value }) {
         Image(
             painter = image,
             contentDescription = title,
@@ -57,6 +60,56 @@ fun SinglePicAndText(imageID: Int, title: String) {
                 color = Color.Black,
                 textAlign = TextAlign.Center,
                 fontSize = 25.sp
+            )
+        }
+        if (dialogState.value) {
+            AlertDialog(
+                backgroundColor = Color.Transparent,
+                onDismissRequest = {
+                    dialogState.value = false
+                },
+
+                text = {
+                   // Column( modifier = Modifier.fillMaxSize()) {
+                        Row(modifier = Modifier.fillMaxWidth().weight(1f)){
+                            Image(painter = image, contentDescription = title )
+                        }
+
+                   // }
+
+                },
+                buttons = {
+                    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = title,
+                            textAlign = TextAlign.Center,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 25.sp
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.padding(all = 8.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+
+                        Button(
+                            modifier = Modifier.fillMaxWidth().weight(1f).padding(4.dp),
+                            onClick = { dialogState.value = false }
+                        ) {
+                            Text("Tilbage")
+                        }
+                        Button(
+                            modifier = Modifier.fillMaxWidth().weight(1f).padding(4.dp),
+                            onClick = {
+                                dialogState.value = false
+                                //TODO gå til betaling
+                            }
+                        ) {
+                            Text("Bestil")
+                        }
+                    }
+                }
             )
         }
     }
@@ -140,7 +193,8 @@ fun ShareScreen(){
 fun SocialList(id: Int, name: String)
 {
 
-    Row (modifier = Modifier.height(40.dp)
+    Row (modifier = Modifier
+        .height(40.dp)
         .padding(start = 120.dp)
     ) {
         Image(

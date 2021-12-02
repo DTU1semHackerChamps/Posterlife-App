@@ -10,4 +10,5 @@
     <color name="darkgrey">#FF5a5a5a</color>
     <color name="grey">#FF999999</color>
     <color name="offwhite">#FFfcfcf0</color>
+    <color name="invisible">#00fcfcf0</color>
 </resources>
