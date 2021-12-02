@@ -38,9 +38,6 @@ fun InspirationScreen(){
             SinglePicAndText(imageID = posters[index].poster, title = posters[index].title)
         }
     }
-
-
-
 }
 
 @Composable

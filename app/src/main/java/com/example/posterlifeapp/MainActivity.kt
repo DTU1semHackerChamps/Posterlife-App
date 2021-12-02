@@ -24,6 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toUri
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -32,6 +34,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.example.composephoto.camera.CameraCapture
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -153,12 +156,14 @@ fun BottomNavigationBarPreview() {
 }
 
 @Composable
-fun NewPosterButton(){
+fun NewPosterButton() {
     val context = LocalContext.current
     ExtendedFloatingActionButton(
         text = { Text(text = "Ny Plakat") },
-        onClick = { context.startActivity(Intent(context, CameraActivity::class.java)) },
-        icon ={ Icon(Icons.Filled.Add,"")}
+        onClick = {
+            context.startActivity(Intent(context,CameraActivity::class.java))
+        },
+        icon = { Icon(Icons.Filled.Add, "") }
     )
 
 }
@@ -182,40 +187,4 @@ fun Navigation(navController: NavHostController) {
 }
 
 
-/**
- * Heavily inspired by David Pisoni's repo
- * https://github.com/gefilte/compose-photo-integration/tree/step-4-capture-image
- */
-@ExperimentalCoilApi
-@ExperimentalCoroutinesApi
-@ExperimentalPermissionsApi
-@Composable
-fun MainContent(modifier: Modifier = Modifier){
-    val emptyImgURI = Uri.parse("file://dev/null")
-    var imageUri by remember { mutableStateOf(emptyImgURI) }
-    if(imageUri != emptyImgURI){
-        Box(modifier = modifier){
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = rememberImagePainter(imageUri),
-                contentDescription = "Captured image"
-            )
-            Button(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                onClick = {
-                    imageUri = emptyImgURI
-                }
-            ) {
-               Text("Remove image")
-            }
-        }
-    } else {
-        CameraCapture(
-            modifier = modifier,
-            onImageFile = { file ->
-                imageUri = file.toUri()
-            }
-        )
-    }
-}
 
