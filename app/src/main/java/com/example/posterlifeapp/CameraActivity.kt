@@ -87,7 +87,7 @@ fun MainContent(modifier: Modifier = Modifier){
                     .align(Alignment.BottomCenter)
                     .padding(16.dp),
                 onClick = {
-                    val intent = Intent(context,EditImageActivity::class.java)
+                    val intent = Intent(context,EditPhotoActivity::class.java)
                     intent.putExtra("imageUri", imageUri.toString())
                     context.startActivity(intent)
 

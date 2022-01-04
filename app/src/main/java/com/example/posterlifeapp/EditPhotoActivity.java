@@ -4,12 +4,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
+import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 
+import java.io.File;
+
+
+// TODO convert to kotlin later
 
 public class EditPhotoActivity extends AppCompatActivity {
 
@@ -24,6 +31,18 @@ public class EditPhotoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_photo);
 
         imgedit = (ImageView) findViewById(R.id.imgedit);
+
+        path = getIntent().getStringExtra("imageUri");
+        File imgfile = new File(path);
+        if (imgfile.exists()){
+            Bitmap mybitmap = BitmapFactory.decodeFile(imgfile.getAbsolutePath());
+            imgedit.setImageBitmap(mybitmap);
+        }
+
+
+        inputImageUri=Uri.fromFile(new File(path));
+        edit_trial();
+
     }
 
 
@@ -31,7 +50,12 @@ public class EditPhotoActivity extends AppCompatActivity {
         Intent dsPhotoEditorIntent = new Intent(this, DsPhotoEditorActivity.class);
         dsPhotoEditorIntent.setData(inputImageUri);
 
+        dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY,"Posterlife Photo Directory");
+        int[] toolsToHide={DsPhotoEditorActivity.TOOL_ORIENTATION, DsPhotoEditorActivity.TOOL_CROP};
 
+        dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE, toolsToHide);
+
+        startActivityForResult(dsPhotoEditorIntent, 200);
 
     }
 
