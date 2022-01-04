@@ -4,13 +4,14 @@ import android.content.res.AssetManager
 import com.example.posterlifeapp.model.Poster
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.json.JSONObject
 
-class InspirationRepository(JSONassets: AssetManager) {
+class InspirationRepository() {
 
-    var json = JSONassets
+    val reader = JSONObject("posterlife.json")
 
     fun loadJSONPosterData(): List<Poster>? {
-        var file = json.open("posterlife.json")
+        var file = reader.getJSONArray()
         val formArray = ByteArray(file.available())
         file.read(formArray)
         file.close()

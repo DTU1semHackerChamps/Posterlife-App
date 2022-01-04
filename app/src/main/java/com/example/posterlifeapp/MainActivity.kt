@@ -1,5 +1,6 @@
 package com.example.posterlifeapp
 
+import android.content.ContextWrapper
 import android.content.res.Resources
 import android.content.Intent
 import android.os.Bundle
@@ -30,7 +31,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 import com.example.posterlifeapp.viewModel.InspirationViewModel
-import android.content.res.AssetManager as
+import android.content.res.AssetManager
+import androidx.compose.runtime.rememberCompositionContext
+import com.example.posterlifeapp.Repositories.InspirationRepository
 
 typealias LumaListener = (luma: Double) -> Unit
 
@@ -162,10 +165,10 @@ fun NewPosterButton(){
 
 @Composable
 fun Navigation(navController: NavHostController) {
-    val JSONassets = applicationContext
     NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
+        val JSONassets: InspirationRepository
         composable(NavigationItem.Inspiration.route) {
-            InspirationScreen(InspirationViewModel(JSONassets = ))
+            InspirationScreen(InspirationViewModel())
 
         }
         composable(NavigationItem.Profile.route) {

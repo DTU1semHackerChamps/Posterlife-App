@@ -1,5 +1,6 @@
 package com.example.posterlifeapp
 
+import android.content.ContextWrapper
 import android.content.res.AssetManager
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.posterlifeapp.Repositories.InspirationRepository
 import com.example.posterlifeapp.viewModel.InspirationViewModel
 
 class ContentView {
@@ -27,8 +29,10 @@ class ContentView {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun InspirationScreen(inspirationViewModel: InspirationViewModel){
+fun InspirationScreen(){
     val posters = PosterList()
+    val insp =
+
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
         modifier = Modifier.padding(bottom = 50.dp)
@@ -37,10 +41,6 @@ fun InspirationScreen(inspirationViewModel: InspirationViewModel){
             SinglePicAndText(imageID = posters[index].poster, title = posters[index].title)
         }
     }
-
-
-
-
 }
 
 @Composable
@@ -70,7 +70,7 @@ fun SinglePicAndText(imageID: Int, title: String) {
 @Preview(showBackground = true)
 @Composable
 fun InspirationScreenPreview(){
-    InspirationScreen(InspirationViewModel(JSONassets = ))
+    InspirationScreen(InspirationViewModel())
 }
 
 @Composable
