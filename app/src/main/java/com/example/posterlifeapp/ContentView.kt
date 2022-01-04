@@ -2,6 +2,8 @@ package com.example.posterlifeapp
 
 import android.content.ContextWrapper
 import android.content.res.AssetManager
+import android.graphics.drawable.Drawable
+import android.renderscript.ScriptGroup
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,8 +23,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.example.posterlifeapp.Repositories.InspirationRepository
 import com.example.posterlifeapp.viewModel.InspirationViewModel
+import java.io.ByteArrayInputStream
+import java.io.InputStream
+import java.io.InputStreamReader
 
 class ContentView {
 }
@@ -30,25 +36,25 @@ class ContentView {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun InspirationScreen(){
-    val posters = PosterList()
-    val insp =
+    val insp = InspirationRepository().loadJSONPosterData()
+    val posters = insp
 
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
         modifier = Modifier.padding(bottom = 50.dp)
     ){
-        items(posters.size) { index ->
-            SinglePicAndText(imageID = posters[index].poster, title = posters[index].title)
+        items(posters!!.size) { index ->
+            SinglePicAndText(imageID = posters[index].imageUrl, title = posters[index].title)
         }
     }
 }
 
 @Composable
-fun SinglePicAndText(imageID: Int, title: String) {
-    val image: Painter = painterResource(imageID)
+fun SinglePicAndText(imageID: String, title: String) {
+
     Column(modifier = Modifier.padding(4.dp)) {
         Image(
-            painter = image,
+            painter = rememberImagePainter(imageID),
             contentDescription = title,
 //            contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
@@ -70,7 +76,7 @@ fun SinglePicAndText(imageID: Int, title: String) {
 @Preview(showBackground = true)
 @Composable
 fun InspirationScreenPreview(){
-    InspirationScreen(InspirationViewModel())
+    InspirationScreen()
 }
 
 @Composable

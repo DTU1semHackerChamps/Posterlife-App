@@ -8,7 +8,7 @@ import com.example.posterlifeapp.Repositories.InspirationRepository
 import com.example.posterlifeapp.model.Poster
 
 class InspirationViewModel(JSONassets: AssetManager) : ViewModel() {
-    var inspirationRepository: InspirationRepository = InspirationRepository(JSONassets)
+    //var inspirationRepository: InspirationRepository = InspirationRepository(JSONassets)
 
     private var _mutableInspirationList = MutableLiveData<List<Poster>>()
 
@@ -16,6 +16,6 @@ class InspirationViewModel(JSONassets: AssetManager) : ViewModel() {
     get() = _mutableInspirationList
 
     init {
-        _mutableInspirationList.value = inspirationRepository.loadJSONPosterData()
+        //_mutableInspirationList.value = inspirationRepository.loadJSONPosterData()
     }
 }

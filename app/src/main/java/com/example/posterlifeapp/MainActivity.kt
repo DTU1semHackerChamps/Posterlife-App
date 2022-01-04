@@ -168,7 +168,7 @@ fun Navigation(navController: NavHostController) {
     NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
         val JSONassets: InspirationRepository
         composable(NavigationItem.Inspiration.route) {
-            InspirationScreen(InspirationViewModel())
+            InspirationScreen()
 
         }
         composable(NavigationItem.Profile.route) {
