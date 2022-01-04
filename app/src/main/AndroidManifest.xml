@@ -14,6 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PosterLifeApp">
         <activity
+            android:name=".EditImageActivity"
+            android:exported="true"
+            android:label="@string/title_activity_edit_image"
+            android:theme="@style/Theme.PosterLifeApp.NoActionBar" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/title_activity_main2"
@@ -26,9 +31,7 @@
         </activity>
         <activity
             android:name=".CameraActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>
