@@ -22,6 +22,11 @@
             android:name=".EditPhotoActivity"
             android:exported="true" />
         <activity
+            android:name=".ShoppingCartActivity"
+            android:exported="true"
+            android:label="@string/title_activity_shopping_cart"
+            android:theme="@style/Theme.PosterLifeApp.NoActionBar" />
+        <activity
             android:name=".EditImageActivity"
             android:exported="true"
             android:label="@string/title_activity_edit_image"

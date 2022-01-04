@@ -1,5 +1,7 @@
 package com.example.posterlifeapp
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -103,10 +105,9 @@ fun SinglePicAndText(imageID: Int, title: String) {
                             modifier = Modifier.fillMaxWidth().weight(1f).padding(4.dp),
                             onClick = {
                                 dialogState.value = false
-                                //TODO gå til betaling
                             }
                         ) {
-                            Text("Bestil")
+                            Text("Tilføj til kurv")
                         }
                     }
                 }

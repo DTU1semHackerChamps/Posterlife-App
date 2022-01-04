@@ -8,18 +8,25 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -88,6 +95,30 @@ fun TopBar() {
     ){
         Box(modifier = Modifier.height(32.dp)){
 
+            Box( modifier = Modifier
+                .align(Alignment.TopEnd)) {
+                Image(painter = painterResource(id = R.drawable.ic_shopping_cart_white_24dp),
+                    modifier = Modifier
+                        .clickable { }
+                        .scale(1.5f)
+                        .padding(5.dp, 5.dp, 13.dp, 5.dp),
+                    contentDescription = "Indkøbskurv")
+                Box(modifier = Modifier
+                    .size(15.dp)
+                    .clip(CircleShape)
+                    .background(Color.Red)
+                    .align(Alignment.BottomCenter)
+                    .fillMaxSize(),){
+                    Text( modifier = Modifier
+                        .align(Alignment.Center),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        text = "0"
+                    )
+                }
+            }
+
+
             Row(Modifier.fillMaxSize()) {
 
                 Text(
@@ -97,6 +128,7 @@ fun TopBar() {
                     text = stringResource(id = R.string.app_name),
                     fontSize = 24.sp
                 )
+
 
             }
         }
@@ -167,6 +199,7 @@ fun NewPosterButton() {
     )
 
 }
+
 
 
 @Composable
