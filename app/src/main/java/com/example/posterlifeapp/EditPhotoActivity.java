@@ -12,13 +12,20 @@ import android.widget.ImageView;
 
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
+import com.google.accompanist.permissions.ExperimentalPermissionsApi;
 
 import java.io.File;
+
+import coil.annotation.ExperimentalCoilApi;
+import kotlinx.coroutines.ExperimentalCoroutinesApi;
 
 
 // TODO convert to kotlin later
 
 public class EditPhotoActivity extends AppCompatActivity {
+    @ExperimentalCoroutinesApi
+    @ExperimentalCoilApi
+    @ExperimentalPermissionsApi
 
     ImageView imgedit;
 
