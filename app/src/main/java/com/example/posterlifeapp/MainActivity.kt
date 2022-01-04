@@ -162,9 +162,10 @@ fun NewPosterButton(){
 
 @Composable
 fun Navigation(navController: NavHostController) {
+    val JSONassets = applicationContext
     NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
         composable(NavigationItem.Inspiration.route) {
-            InspirationScreen(InspirationViewModel(JSONassets = AssetManager))
+            InspirationScreen(InspirationViewModel(JSONassets = ))
 
         }
         composable(NavigationItem.Profile.route) {

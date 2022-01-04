@@ -70,7 +70,7 @@ fun SinglePicAndText(imageID: Int, title: String) {
 @Preview(showBackground = true)
 @Composable
 fun InspirationScreenPreview(){
-    InspirationScreen(InspirationViewModel())
+    InspirationScreen(InspirationViewModel(JSONassets = ))
 }
 
 @Composable
