@@ -1,22 +1,16 @@
 package com.example.posterlifeapp
 
-import android.content.ContextWrapper
 import android.content.res.AssetManager
-import android.graphics.drawable.Drawable
-import android.renderscript.ScriptGroup
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,32 +19,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.posterlifeapp.Repositories.InspirationRepository
-import com.example.posterlifeapp.viewModel.InspirationViewModel
-import java.io.ByteArrayInputStream
-import java.io.InputStream
-import java.io.InputStreamReader
+import com.example.posterlifeapp.Repositories.Utils
 
 class ContentView {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun InspirationScreen(){
-    val insp = InspirationRepository().loadJSONPosterData()
-    val posters = insp
+fun InspirationScreen(assets : AssetManager){
+    val posters = PosterList()
+    val pop = Utils(assets)
+
+    pop.postersFromAPI()
 
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
         modifier = Modifier.padding(bottom = 50.dp)
     ){
-        items(posters!!.size) { index ->
-            SinglePicAndText(imageID = posters[index].imageUrl, title = posters[index].title)
+        items(posters.size) { index ->
+            SinglePicAndText(imageID = posters[index].poster, title = posters[index].title)
         }
     }
 }
 
 @Composable
-fun SinglePicAndText(imageID: String, title: String) {
+fun SinglePicAndText(imageID: Int, title: String) {
 
     Column(modifier = Modifier.padding(4.dp)) {
         Image(
@@ -76,7 +69,7 @@ fun SinglePicAndText(imageID: String, title: String) {
 @Preview(showBackground = true)
 @Composable
 fun InspirationScreenPreview(){
-    InspirationScreen()
+    //InspirationScreen()
 }
 
 @Composable
