@@ -172,7 +172,6 @@ class MainActivity2 : ComponentActivity() {
         NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
             composable(NavigationItem.Inspiration.route) {
                 InspirationScreen(assests)
-
             }
             composable(NavigationItem.Profile.route) {
                 ProfileScreen()

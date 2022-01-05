@@ -1,8 +1,10 @@
 package com.example.posterlifeapp
 
+import android.content.ContentValues.TAG
 import android.content.res.AssetManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.PaintDrawable
 import android.nfc.Tag
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,17 +31,22 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toDrawable
 import coil.Coil
 import coil.annotation.ExperimentalCoilApi
+import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import com.example.posterlifeapp.Repositories.InspirationRepository
 import com.example.posterlifeapp.Repositories.Utils
+import com.google.accompanist.coil.*
+import com.google.accompanist.imageloading.rememberDrawablePainter
+import java.io.InputStream
 
 class ContentView {
 }
 
 
-@ExperimentalFoundationApi
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun InspirationScreen(assets : AssetManager){
+
     val util = Utils(assets)
     val posters = util.postersFromAPI()
 
@@ -47,7 +55,7 @@ fun InspirationScreen(assets : AssetManager){
         modifier = Modifier.padding(bottom = 50.dp)
     ){
         items(posters.size) { index ->
-            SinglePicAndText(imageID = util.posterBitMap(posters[index].imageUrl),
+            SinglePicAndText(imageID = posters[index].imageUrl,
                 title = posters[index].title)
         }
     }
@@ -55,11 +63,11 @@ fun InspirationScreen(assets : AssetManager){
 
 
 @Composable
-fun SinglePicAndText(imageID: Bitmap, title: String) {
+fun SinglePicAndText(imageID: String, title: String) {
 
     Column(modifier = Modifier.padding(4.dp)) {
         Image(
-            bitmap = imageID.asImageBitmap(),
+            painter = rememberCoilPainter("https://posterlife.dk/wp-content/uploads/2019/05/UniversetsBeskaffenhed_Benny_Andersen_1960.jpg"),
             contentDescription = title,
 //            contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
