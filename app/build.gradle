@@ -85,6 +85,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation "com.google.accompanist:accompanist-permissions:0.18.0"
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
+    implementation 'com.github.chrisbanes:accompanist:v0.19.0'
 
 
 }
