@@ -1,7 +1,9 @@
 package com.example.posterlifeapp
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,11 +21,17 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.paperdb.Paper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class ContentView {
 }
@@ -73,7 +81,9 @@ fun SinglePicAndText(imageID: Int, title: String) {
 
                 text = {
                    // Column( modifier = Modifier.fillMaxSize()) {
-                        Row(modifier = Modifier.fillMaxWidth().weight(1f)){
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)){
                             Image(painter = image, contentDescription = title )
                         }
 
@@ -96,15 +106,26 @@ fun SinglePicAndText(imageID: Int, title: String) {
                     ) {
 
                         Button(
-                            modifier = Modifier.fillMaxWidth().weight(1f).padding(4.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                                .padding(4.dp),
                             onClick = { dialogState.value = false }
                         ) {
                             Text("Tilbage")
                         }
                         Button(
-                            modifier = Modifier.fillMaxWidth().weight(1f).padding(4.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                                .padding(4.dp),
                             onClick = {
-                                dialogState.value = false
+                                GlobalScope.launch(Dispatchers.Main) {
+                                    async {
+                                        SyncCart(title)
+                                    }
+                                    dialogState.value = false
+                                }
                             }
                         ) {
                             Text("Tilføj til kurv")
@@ -215,4 +236,18 @@ fun SocialList(id: Int, name: String)
 @Composable
 fun ShareScreenPreview(){
     ShareScreen()
+}
+
+suspend fun SyncCart(title: String){
+    var titles = mutableListOf<String>()
+    if(Paper.book().read<List<String>>("Titles") != null){
+        titles = Paper.book().read<List<String>>("Titles") as MutableList<String>
+    }
+    titles.add(title)
+    if(Paper.book().read<List<String>>("Titles") != null){
+        Paper.book().delete("Titles")
+    }
+    Paper.book().write("Titles", titles)
+    val hej = Paper.book().read<List<String>>("Titles")
+    Log.d(TAG, "SyncCart: $hej")
 }

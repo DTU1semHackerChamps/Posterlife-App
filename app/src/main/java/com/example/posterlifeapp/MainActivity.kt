@@ -44,6 +44,7 @@ import coil.compose.rememberImagePainter
 import com.example.composephoto.camera.CameraCapture
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import io.paperdb.Paper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 typealias LumaListener = (luma: Double) -> Unit
@@ -53,6 +54,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Paper.init(this)
         setContent {
             PosterLifeAppTheme {
                 // A surface container using the 'background' color from the theme
