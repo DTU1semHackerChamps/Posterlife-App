@@ -4,6 +4,7 @@ import android.content.res.AssetManager
 import android.graphics.Bitmap
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,7 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,7 +48,7 @@ fun InspirationScreen(assets : AssetManager ){
 
 
     LazyVerticalGrid(
-        cells = GridCells.Adaptive(minSize = 140.dp),
+        cells = GridCells.Adaptive(minSize = 180.dp),
     ){
         items(posters.size) { index ->
             SinglePicAndText(imageID = posters[index].imageUrl,
@@ -59,14 +63,17 @@ fun InspirationScreen(assets : AssetManager ){
 @Composable
 fun SinglePicAndText(imageID: String, title: String) {
 
-    Column(modifier = Modifier.padding(10.dp)) {
+    Column(modifier = Modifier.padding(10.dp)
+    ) {
         Image(painter = rememberImagePainter(
             data = imageID,
             builder = {
                 crossfade(true)
                 placeholder(R.drawable.ic_launcher_foreground)
             }),
-            modifier = Modifier.size(140.dp),
+            modifier = Modifier
+                .size(270.dp)
+                .shadow(elevation = 20.dp),
             alignment = Alignment.Center,
             contentDescription = title
         )
