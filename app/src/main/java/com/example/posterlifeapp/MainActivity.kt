@@ -4,25 +4,36 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.AssetManager
+import android.net.Uri
 import android.os.Bundle
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toUri
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -30,24 +41,31 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.posterlifeapp.Repositories.Utils
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
+import com.example.composephoto.camera.CameraCapture
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import io.paperdb.Paper
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 typealias LumaListener = (luma: Double) -> Unit
 
 
-class MainActivity2 : ComponentActivity() {
+class MainActivity : ComponentActivity() {
 
-    private lateinit var assests: AssetManager
+    private lateinit var jsonAssests: AssetManager
     private lateinit var util : Utils
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Paper.init(this)
         setContent {
-            assests = applicationContext.assets
+            jsonAssests = applicationContext.assets
             PosterLifeAppTheme {
                 // A surface container using the 'background' color from the theme
 //                Surface(color = MaterialTheme.colors.background) {
@@ -57,7 +75,7 @@ class MainActivity2 : ComponentActivity() {
             }
         }
     }
-
+}
 
     @Composable
     fun MainScreen() {
@@ -88,7 +106,31 @@ class MainActivity2 : ComponentActivity() {
         ) {
             Box(modifier = Modifier.height(32.dp)) {
 
-                Row(Modifier.fillMaxSize()) {
+            Box( modifier = Modifier
+                .align(Alignment.TopEnd)) {
+                Image(painter = painterResource(id = R.drawable.ic_shopping_cart_white_24dp),
+                    modifier = Modifier
+                        .clickable { }
+                        .scale(1.5f)
+                        .padding(5.dp, 5.dp, 13.dp, 5.dp),
+                    contentDescription = "Indkøbskurv")
+                Box(modifier = Modifier
+                    .size(15.dp)
+                    .clip(CircleShape)
+                    .background(Color.Red)
+                    .align(Alignment.BottomCenter)
+                    .fillMaxSize(),){
+                    Text( modifier = Modifier
+                        .align(Alignment.Center),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        text = "0"
+                    )
+                }
+            }
+
+
+            Row(Modifier.fillMaxSize()) {
 
                     Text(
                         modifier = Modifier.fillMaxWidth(),
@@ -100,7 +142,6 @@ class MainActivity2 : ComponentActivity() {
 
                 }
             }
-
 
         }
     }
@@ -160,14 +201,16 @@ class MainActivity2 : ComponentActivity() {
         //BottomNaigationBar()
     }
 
-    @Composable
-    fun NewPosterButton() {
-        val context = LocalContext.current
-        ExtendedFloatingActionButton(
-            text = { Text(text = "Ny Plakat") },
-            onClick = { context.startActivity(Intent(context, CameraActivity::class.java)) },
-            icon = { Icon(Icons.Filled.Add, "") }
-        )
+@Composable
+fun NewPosterButton() {
+    val context = LocalContext.current
+    ExtendedFloatingActionButton(
+        text = { Text(text = "Ny Plakat") },
+        onClick = {
+            context.startActivity(Intent(context,CameraActivity::class.java))
+        },
+        icon = { Icon(Icons.Filled.Add, "") }
+    )
 
     }
 
@@ -176,7 +219,7 @@ class MainActivity2 : ComponentActivity() {
     fun Navigation(navController: NavHostController) {
         NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
             composable(NavigationItem.Inspiration.route) {
-                InspirationScreen(assests)
+                InspirationScreen(jsonAssests)
             }
             composable(NavigationItem.Profile.route) {
                 ProfileScreen()

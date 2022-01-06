@@ -1,158 +1,116 @@
 package com.example.posterlifeapp
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.Manifest
+
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import java.util.concurrent.Executors
-import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
-import kotlinx.android.synthetic.main.activity_camera.*
-import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
-import java.nio.ByteBuffer
-import java.text.SimpleDateFormat
-import java.util.*
-import java.util.concurrent.ExecutorService
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.ImagePainter.State.Empty.painter
+import coil.compose.rememberImagePainter
+import com.example.composephoto.camera.CameraCapture
+import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-class CameraActivity : AppCompatActivity() {
-    private var imageCapture: ImageCapture? = null
-
-    private lateinit var outputDirectory: File
-    private lateinit var cameraExecutor: ExecutorService
-
+class CameraActivity : ComponentActivity() {
+    @ExperimentalCoroutinesApi
+    @ExperimentalCoilApi
+    @ExperimentalPermissionsApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_camera)
-
-        // Request camera permissions
-        if (allPermissionsGranted()) {
-            startCamera()
-        } else {
-            ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
-        }
-
-        // Set up the listener for take photo button
-        camera_capture_button.setOnClickListener { takePhoto() }
-
-        val intent = Intent(this, MainActivity2::class.java)
-
-        cameraBackBtn.setOnClickListener{startActivity(intent)}
-
-        outputDirectory = getOutputDirectory()
-
-        cameraExecutor = Executors.newSingleThreadExecutor()
-    }
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                startCamera()
-            } else {
-                Toast.makeText(this,
-                    "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT).show()
-                finish()
+        setContent {
+            PosterLifeAppTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(color = MaterialTheme.colors.background) {
+                    MainContent(Modifier.fillMaxSize())
+                }
             }
         }
     }
+}
 
-    private fun takePhoto() {
-        // Get a stable reference of the modifiable image capture use case
-        val imageCapture = imageCapture ?: return
+/**
+ * Heavily inspired by David Pisoni's repo
+ * https://github.com/gefilte/compose-photo-integration/tree/step-4-capture-image
+ */
+@ExperimentalCoilApi
+@ExperimentalCoroutinesApi
+@ExperimentalPermissionsApi
+@Composable
+fun MainContent(modifier: Modifier = Modifier){
+    val emptyImgURI = Uri.parse("file://dev/null")
+    var imageUri by remember { mutableStateOf(emptyImgURI) }
+    val context = LocalContext.current
+    if(imageUri != emptyImgURI){
+        Box(modifier = modifier){
+            Image(
+                painter = painterResource(id = R.drawable.ic_arrow_back_black_24dp),
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .clickable(
+                        onClick = {
+                            imageUri = emptyImgURI
+                        },
+                        enabled = true
+                    )
+                    .size(50.dp)
+                    .padding(5.dp),
+                contentDescription = "Back"
 
-        // Create time-stamped output file to hold the image
-        val photoFile = File(
-            outputDirectory,
-            SimpleDateFormat(FILENAME_FORMAT, Locale.US
-            ).format(System.currentTimeMillis()) + ".jpg")
+            )
+            Image(
+                modifier = Modifier.fillMaxSize(),
+                painter = rememberImagePainter(imageUri),
+                contentDescription = "Captured image"
+            )
 
-        // Create output options object which contains file + metadata
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+            Button(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(16.dp),
+                onClick = {
+                    val intent = Intent(context,EditImageActivity::class.java)
+                    intent.putExtra("imageUri", imageUri.toString())
+                    context.startActivity(intent)
 
-        // Set up image capture listener, which is triggered after photo has
-        // been taken
-        imageCapture.takePicture(
-            outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
-                override fun onError(exc: ImageCaptureException) {
-                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                 }
-
-                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val savedUri = Uri.fromFile(photoFile)
-                    val msg = "Photo capture succeeded: $savedUri"
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, msg)
-                }
-            })
-    }
-
-    private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-
-        cameraProviderFuture.addListener(Runnable {
-            // Used to bind the lifecycle of cameras to the lifecycle owner
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
-            // Preview
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(viewFinder.surfaceProvider)
-                }
-
-            imageCapture = ImageCapture.Builder()
-                .build()
-
-            // Select back camera as a default
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-            try {
-                // Unbind use cases before rebinding
-                cameraProvider.unbindAll()
-
-                // Bind use cases to camera
-                cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture)
-
-            } catch(exc: Exception) {
-                Log.e(TAG, "Use case binding failed", exc)
+            ) {
+                Text("Continue")
             }
 
-        }, ContextCompat.getMainExecutor(this))
+        }
+    } else {
+        CameraCapture(
+            modifier = modifier,
+            onImageFile = { file ->
+                imageUri = file.toUri()
+            }
+        )
     }
-
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(
-            baseContext, it) == PackageManager.PERMISSION_GRANTED
-    }
-
-
-    private fun getOutputDirectory(): File {
-        val mediaDir = externalMediaDirs.firstOrNull()?.let {
-
-            File(it, resources.getString(R.string.app_name)).apply { mkdirs() } }
-        return if (mediaDir != null && mediaDir.exists())
-            mediaDir else filesDir
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        cameraExecutor.shutdown()
-    }
-
-    companion object {
-        private const val TAG = "CameraXBasic"
-        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-    }
+}
+@ExperimentalCoilApi
+@Preview(showBackground = true)
+@Composable
+@ExperimentalPermissionsApi
+@ExperimentalCoroutinesApi
+fun CameraPreview(){
+    MainContent(Modifier.fillMaxSize())
 }

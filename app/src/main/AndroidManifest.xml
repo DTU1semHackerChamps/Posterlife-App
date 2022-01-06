@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
     package="com.example.posterlifeapp">
+
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -14,9 +14,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PosterLifeApp">
-
         <activity
-            android:name=".MainActivity2"
+            android:name=".ShoppingCartActivity"
+            android:exported="true"
+            android:label="@string/title_activity_shopping_cart"
+            android:theme="@style/Theme.PosterLifeApp.NoActionBar" />
+        <activity
+            android:name=".EditImageActivity"
+            android:exported="true"
+            android:label="@string/title_activity_edit_image"
+            android:theme="@style/Theme.PosterLifeApp.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/title_activity_main2"
             android:theme="@style/Theme.PosterLifeApp.NoActionBar">
@@ -27,29 +36,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
-            android:exported="true" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="true"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".CameraActivity"
-            android:exported="true"/>
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -2,9 +2,14 @@ package com.example.posterlifeapp
 
 import android.content.res.AssetManager
 import android.graphics.Bitmap
+import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +25,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,10 +42,14 @@ import com.google.accompanist.coil.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 import java.net.URL
+import io.paperdb.Paper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class ContentView {
 }
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -63,15 +76,17 @@ fun InspirationScreen(assets : AssetManager ){
 
 @Composable
 fun SinglePicAndText(imageID: String, title: String) {
-
+    val image: Painter = rememberImagePainter(
+        data = imageID,
+        builder = {
+            crossfade(true)
+            placeholder(R.drawable.ic_launcher_foreground)
+        })
+    var dialogState = remember { mutableStateOf(false) }
     Column(modifier = Modifier.padding(10.dp)
+        .clickable { dialogState.value = !dialogState.value }
     ) {
-        Image(painter = rememberImagePainter(
-            data = imageID,
-            builder = {
-                crossfade(true)
-                placeholder(R.drawable.ic_launcher_foreground)
-            }),
+        Image(painter = image,
             modifier = Modifier
                 .size(265.dp)
                 .shadow(elevation = 20.dp,
@@ -88,8 +103,69 @@ fun SinglePicAndText(imageID: String, title: String) {
                 fontSize = 18.sp
             )
         }
-    }
+        if (dialogState.value) {
+            AlertDialog(
+                backgroundColor = Color.Transparent,
+                onDismissRequest = {
+                    dialogState.value = false
+                },
 
+                text = {
+                   // Column( modifier = Modifier.fillMaxSize()) {
+                        Row(modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)){
+                            Image(painter = image, contentDescription = title )
+                        }
+
+                   // }
+
+                },
+                buttons = {
+                    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            text = title,
+                            textAlign = TextAlign.Center,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 25.sp
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.padding(all = 8.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                                .padding(4.dp),
+                            onClick = { dialogState.value = false }
+                        ) {
+                            Text("Tilbage")
+                        }
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                                .padding(4.dp),
+                            onClick = {
+                                GlobalScope.launch(Dispatchers.Main) {
+                                    async {
+                                        SyncCart(title)
+                                    }
+                                    dialogState.value = false
+                                }
+                            }
+                        ) {
+                            Text("Tilføj til kurv")
+                        }
+                    }
+                }
+            )
+        }
+    }
 }
 
 
@@ -191,4 +267,18 @@ fun SocialList(id: Int, name: String)
 @Composable
 fun ShareScreenPreview(){
     ShareScreen()
+}
+
+suspend fun SyncCart(title: String){
+    var titles = mutableListOf<String>()
+    if(Paper.book().read<List<String>>("Titles") != null){
+        titles = Paper.book().read<List<String>>("Titles") as MutableList<String>
+    }
+    titles.add(title)
+    if(Paper.book().read<List<String>>("Titles") != null){
+        Paper.book().delete("Titles")
+    }
+    Paper.book().write("Titles", titles)
+    val hej = Paper.book().read<List<String>>("Titles")
+    Log.d(TAG, "SyncCart: $hej")
 }
