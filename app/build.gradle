@@ -21,6 +21,7 @@ android {
         }
     }
 
+
     buildTypes {
         release {
             minifyEnabled false
@@ -51,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.burhanrashid52:photoeditor:1.5.1'
     // CameraX core library using the camera2 implementation
     def camerax_version = "1.0.2"
     // The following line is optional, as the core library is included indirectly by camera-camera2
