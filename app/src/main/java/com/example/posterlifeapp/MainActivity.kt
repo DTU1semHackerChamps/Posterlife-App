@@ -11,6 +11,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -75,7 +76,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
+
 
     @Composable
     fun MainScreen() {
@@ -110,9 +111,10 @@ class MainActivity : ComponentActivity() {
                 .align(Alignment.TopEnd)) {
                 Image(painter = painterResource(id = R.drawable.ic_shopping_cart_white_24dp),
                     modifier = Modifier
+                        .background(Color.Transparent, shape = CircleShape)
+                        .padding(5.dp, 5.dp, 13.dp, 5.dp)
                         .clickable { }
-                        .scale(1.5f)
-                        .padding(5.dp, 5.dp, 13.dp, 5.dp),
+                        .scale(1.5f),
                     contentDescription = "Indkøbskurv")
                 Box(modifier = Modifier
                     .size(15.dp)
