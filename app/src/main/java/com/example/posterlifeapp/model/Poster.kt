@@ -1,5 +1,6 @@
 package com.example.posterlifeapp.model
 
+import android.graphics.Bitmap
 import com.google.gson.annotations.SerializedName
 
 data class Poster (
@@ -14,5 +15,6 @@ data class Poster (
     @SerializedName("Price 50x70")
     var price50x70: Int,
     @SerializedName("Price A3")
-    var priceA3: Int
+    var priceA3: Int,
+    var bitmap: Bitmap
     )

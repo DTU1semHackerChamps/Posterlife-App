@@ -1,43 +1,33 @@
 package com.example.posterlifeapp
 
-import android.content.ContentValues.TAG
 import android.content.res.AssetManager
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.PaintDrawable
-import android.nfc.Tag
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.toDrawable
-import coil.Coil
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
-import com.example.posterlifeapp.Repositories.InspirationRepository
+import coil.request.ImageRequest
 import com.example.posterlifeapp.Repositories.Utils
+import com.example.posterlifeapp.model.Poster
 import com.google.accompanist.coil.*
-import com.google.accompanist.imageloading.rememberDrawablePainter
-import java.io.InputStream
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
+import java.net.URL
 
 class ContentView {
 }
@@ -45,32 +35,40 @@ class ContentView {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun InspirationScreen(assets : AssetManager){
+fun InspirationScreen(assets : AssetManager ){
 
     val util = Utils(assets)
-    val posters = util.postersFromAPI()
+    val posters :List<Poster>
+    util.postersFromAPI()
+    posters = util.posters
+
 
     LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
-        modifier = Modifier.padding(bottom = 50.dp)
+        cells = GridCells.Adaptive(minSize = 140.dp),
     ){
         items(posters.size) { index ->
             SinglePicAndText(imageID = posters[index].imageUrl,
                 title = posters[index].title)
         }
     }
+
 }
+
 
 
 @Composable
 fun SinglePicAndText(imageID: String, title: String) {
 
-    Column(modifier = Modifier.padding(4.dp)) {
-        Image(
-            painter = rememberCoilPainter("https://posterlife.dk/wp-content/uploads/2019/05/UniversetsBeskaffenhed_Benny_Andersen_1960.jpg"),
-            contentDescription = title,
-//            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
+    Column(modifier = Modifier.padding(10.dp)) {
+        Image(painter = rememberImagePainter(
+            data = imageID,
+            builder = {
+                crossfade(true)
+                placeholder(R.drawable.ic_launcher_foreground)
+            }),
+            modifier = Modifier.size(140.dp),
+            alignment = Alignment.Center,
+            contentDescription = title
         )
         Row() {
             Text(
@@ -78,7 +76,7 @@ fun SinglePicAndText(imageID: String, title: String) {
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 textAlign = TextAlign.Center,
-                fontSize = 25.sp
+                fontSize = 18.sp
             )
         }
     }

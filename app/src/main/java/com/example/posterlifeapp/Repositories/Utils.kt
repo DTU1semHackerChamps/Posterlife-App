@@ -4,17 +4,21 @@ import android.content.ContentValues.TAG
 import android.content.res.AssetManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.util.Log
 import com.example.posterlifeapp.model.Poster
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.coroutineScope
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class Utils( val assets : AssetManager) {
+class Utils( val assets : AssetManager){
 
-    fun postersFromAPI() : List<Poster>
+    lateinit var posters : List<Poster>
+
+    fun postersFromAPI()
     {
         val jsonString = assets.open("posterlife.json")
         val size = jsonString.available()
@@ -24,16 +28,21 @@ class Utils( val assets : AssetManager) {
         val js = String(foo)
         val typeToken = object : TypeToken<List<Poster>>() {}.type
 
-        return Gson().fromJson(js, typeToken)
+        posters = Gson().fromJson(js, typeToken)
     }
 
-    fun posterBitMap(url: String) : InputStream
+    fun createPosterBitMaps()
     {
-        println(url)
-        val nurl = URL(url)
-        val connection = nurl.openConnection()
-        connection.connect()
-        val input = connection.getInputStream()
-        return input
+
+        for (poster in posters) {
+            val url = URL(poster.imageUrl)
+            val connection = url.openConnection()
+            connection.connect()
+            val input = connection.getInputStream()
+            val bm = BitmapFactory.decodeStream(input)
+            if (bm == null) println("WHat?")
+            poster.bitmap = bm
+        }
+
     }
 }

@@ -29,8 +29,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.posterlifeapp.Repositories.Utils
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
-import com.example.posterlifeapp.Repositories.InspirationRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
+
 
 typealias LumaListener = (luma: Double) -> Unit
 
@@ -38,6 +42,7 @@ typealias LumaListener = (luma: Double) -> Unit
 class MainActivity2 : ComponentActivity() {
 
     private lateinit var assests: AssetManager
+    private lateinit var util : Utils
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
