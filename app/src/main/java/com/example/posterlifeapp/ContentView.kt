@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -72,8 +73,9 @@ fun SinglePicAndText(imageID: String, title: String) {
                 placeholder(R.drawable.ic_launcher_foreground)
             }),
             modifier = Modifier
-                .size(270.dp)
-                .shadow(elevation = 20.dp),
+                .size(265.dp)
+                .shadow(elevation = 20.dp,
+                clip = true),
             alignment = Alignment.Center,
             contentDescription = title
         )
