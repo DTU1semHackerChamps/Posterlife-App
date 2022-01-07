@@ -197,7 +197,8 @@ class ContentView {
         //InspirationScreen()
     }
 
-    @ExperimentalFoundationApi
+
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun ProfileScreen() {
         val profilesIC = listOf(
