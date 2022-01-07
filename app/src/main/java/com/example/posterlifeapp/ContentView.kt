@@ -6,6 +6,8 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import android.widget.Space
+import androidx.compose.foundation.*
 import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -18,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -51,6 +54,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.nio.file.WatchEvent
 import org.intellij.lang.annotations.JdkConstants
 
 class ContentView {
@@ -193,17 +197,53 @@ class ContentView {
         //InspirationScreen()
     }
 
+    @ExperimentalFoundationApi
     @Composable
     fun ProfileScreen() {
         val profilesIC = listOf(
-            "Ønskeliste",
+            "Person Oplysninger",
             "Ordrer",
             "Mine Designs",
-            "Hurtigt køb",
-            "GDPR",
             "Betalingsoplysninger"
         )
 
+        Column(
+            modifier =  Modifier
+                .fillMaxWidth()
+        ) {
+            Spacer(modifier = Modifier.height(50.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.ic_posterlife_logo_sort_svg),
+                contentDescription = "Profile Picture",
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterHorizontally)
+                    .size(120.dp)
+            )
+
+            Spacer(modifier = Modifier.height(80.dp))
+            LazyVerticalGrid(cells = GridCells.Fixed(2),
+
+                )
+            {
+                items(profilesIC.size){ index ->
+                    ProfButton(string = profilesIC[index])
+                }
+            }
+            Spacer(modifier = Modifier.height(50.dp))
+
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ProfButton(string = "GDPR")
+            }
+
+        }
+
+
+        /*
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -225,12 +265,37 @@ class ContentView {
                 )
             }
         }
+
+         */
+    }
+
+    @Composable
+    fun ProfButton(string: String)
+    {
+        Card(
+            modifier = Modifier
+                .padding(8.dp)
+                .width(180.dp)
+                .height(50.dp)
+                .clickable {
+
+                },
+            elevation = 8.dp,
+            backgroundColor = MaterialTheme.colors.secondary
+        )
+        {
+            Text(
+                text = string,
+                modifier = Modifier.padding(13.dp),
+                textAlign = TextAlign.Center
+                )
+        }
     }
 
     @Preview(showBackground = true)
     @Composable
     fun ProfileScreenPreview() {
-        ProfileScreen()
+        //ProfileScreen()
     }
 
     @Composable
