@@ -71,6 +71,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var util : Utils
     private val viewModel: ContentViewModel by viewModels()
     private val title = mutableStateOf("string")
+    private val cartAmount = mutableStateOf(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,7 +118,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.fillMaxWidth()
         ) {
             Box(modifier = Modifier.height(32.dp)) {
-
+            cartAmount.value = viewModel.cartAmount
             Box( modifier = Modifier
                 .align(Alignment.TopEnd)) {
                 Image(painter = painterResource(id = R.drawable.ic_shopping_cart_white_24dp),
@@ -137,7 +138,7 @@ class MainActivity : ComponentActivity() {
                         .align(Alignment.Center),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        text = viewModel.cartAmount.toString(),
+                        text = cartAmount.value.toString(),
                     )
                 }
             }
