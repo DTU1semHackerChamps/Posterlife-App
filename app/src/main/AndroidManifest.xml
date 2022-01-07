@@ -6,6 +6,8 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,11 +20,20 @@
             android:exported="true"
             android:label="@string/title_activity_shopping_cart"
             android:theme="@style/Theme.PosterLifeApp.NoActionBar" />
-        <activity
-            android:name=".EditImageActivity"
+<!--        <activity-->
+<!--            android:name=".EditImageActivity_old"-->
+<!--            android:exported="true"-->
+<!--            android:label="@string/title_activity_edit_image"-->
+<!--            android:theme="@style/Theme.PosterLifeApp.NoActionBar" />-->
+
+        <activity android:name=".editor.EditImageActivity"
             android:exported="true"
             android:label="@string/title_activity_edit_image"
-            android:theme="@style/Theme.PosterLifeApp.NoActionBar" />
+            android:theme="@style/Theme.PosterLifeApp.NoActionBar"/>
+        <activity android:name=".editor.base.BaseActivity"
+            android:exported="true"
+            android:label="@string/tile_activity_base"
+            android:theme="@style/Theme.PosterLifeApp.NoActionBar"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

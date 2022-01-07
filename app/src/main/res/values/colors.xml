@@ -11,4 +11,6 @@
     <color name="grey">#FF999999</color>
     <color name="offwhite">#FFfcfcf0</color>
     <color name="invisible">#00fcfcf0</color>
+    <color name="tool_bg">#151414</color>
+    <color name="semi_black_transparent">#99000000</color>
 </resources>

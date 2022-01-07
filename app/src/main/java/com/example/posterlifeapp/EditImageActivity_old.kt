@@ -22,7 +22,7 @@ import coil.compose.rememberImagePainter
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 
 
-class EditImageActivity : ComponentActivity() {
+class EditImageActivity_old : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

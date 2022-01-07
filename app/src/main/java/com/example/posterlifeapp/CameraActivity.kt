@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,16 +15,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.ImagePainter.State.Empty.painter
 import coil.compose.rememberImagePainter
 import com.example.composephoto.camera.CameraCapture
+import com.example.posterlifeapp.editor.EditImageActivity
+import com.example.posterlifeapp.editor.base.BaseActivity
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -87,7 +86,7 @@ fun MainContent(modifier: Modifier = Modifier){
                     .align(Alignment.BottomCenter)
                     .padding(16.dp),
                 onClick = {
-                    val intent = Intent(context,EditImageActivity::class.java)
+                    val intent = Intent(context,BaseActivity::class.java)
                     intent.putExtra("imageUri", imageUri.toString())
                     context.startActivity(intent)
 
