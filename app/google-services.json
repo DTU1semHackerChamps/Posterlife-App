@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "822610170385",
+    "project_id": "posterlife-e3",
+    "storage_bucket": "posterlife-e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822610170385:android:a6184596303be4abfb57b0",
+        "android_client_info": {
+          "package_name": "com.example.posterlifeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "822610170385-lv4endfvmkr2gulbf324alqvre52qnut.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDepQ_HYv9yZ_uJfT3OZ-kmQXwE3ARCQkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "822610170385-lv4endfvmkr2gulbf324alqvre52qnut.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
