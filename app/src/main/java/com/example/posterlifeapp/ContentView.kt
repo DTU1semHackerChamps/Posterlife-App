@@ -6,6 +6,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,11 +36,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.example.posterlifeapp.Repositories.Utils
 import com.example.posterlifeapp.model.Poster
-import com.google.accompanist.coil.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 import java.net.URL
@@ -54,7 +55,7 @@ class ContentView {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    fun InspirationScreen(assets: AssetManager) {
+    fun InspirationScreen(assets: AssetManager, viewModel: ContentViewModel) {
 
         val util = Utils(assets)
         val posters: List<Poster>
@@ -68,7 +69,8 @@ class ContentView {
             items(posters.size) { index ->
                 SinglePicAndText(
                     imageID = posters[index].imageUrl,
-                    title = posters[index].title
+                    title = posters[index].title,
+                    viewModel
                 )
             }
         }
@@ -77,7 +79,7 @@ class ContentView {
 
 
     @Composable
-    fun SinglePicAndText(imageID: String, title: String) {
+    fun SinglePicAndText(imageID: String, title: String, viewModel: ContentViewModel) {
         val image: Painter = rememberImagePainter(
             data = imageID,
             builder = {
@@ -165,7 +167,7 @@ class ContentView {
                                 onClick = {
                                     GlobalScope.launch(Dispatchers.Main) {
                                         async {
-                                            SyncCart(title)
+                                            SyncCart(title, viewModel)
                                         }
                                         dialogState.value = false
                                     }
@@ -289,7 +291,7 @@ class ContentView {
         ShareScreen()
     }
 
-    suspend fun SyncCart(title: String) {
+    suspend fun SyncCart(title: String, viewModel: ContentViewModel) {
         var titles = mutableListOf<String>()
         if (Paper.book().read<List<String>>("Titles") != null) {
             titles = Paper.book().read<List<String>>("Titles") as MutableList<String>
@@ -299,6 +301,10 @@ class ContentView {
             Paper.book().delete("Titles")
         }
         Paper.book().write("Titles", titles)
+        viewModel.cartAmount = Paper.book().read<List<String>>("Titles")!!.size
+
+
         val hej = Paper.book().read<List<String>>("Titles")
         Log.d(TAG, "SyncCart: $hej")
     }
+

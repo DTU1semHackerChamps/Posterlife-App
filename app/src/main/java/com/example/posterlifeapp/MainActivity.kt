@@ -9,6 +9,7 @@ import android.os.Bundle
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -35,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -61,10 +64,12 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var jsonAssests: AssetManager
     private lateinit var util : Utils
+    private val viewModel: ContentViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Paper.init(this)
+
         setContent {
             jsonAssests = applicationContext.assets
             PosterLifeAppTheme {
@@ -126,7 +131,7 @@ class MainActivity : ComponentActivity() {
                         .align(Alignment.Center),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        text = "0"
+                        text = viewModel.cartAmount.toString(),
                     )
                 }
             }
@@ -221,7 +226,7 @@ fun NewPosterButton() {
     fun Navigation(navController: NavHostController) {
         NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
             composable(NavigationItem.Inspiration.route) {
-                InspirationScreen(jsonAssests)
+                InspirationScreen(jsonAssests, viewModel)
             }
             composable(NavigationItem.Profile.route) {
                 ProfileScreen()
