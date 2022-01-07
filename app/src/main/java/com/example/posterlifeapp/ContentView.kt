@@ -18,6 +18,11 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -318,6 +323,7 @@ class ContentView {
             }
         }
     }
+
     @Composable
     fun ElementInCart(imageID: String, title: String ){
         val image: Painter = rememberImagePainter(
@@ -327,38 +333,71 @@ class ContentView {
                 placeholder(R.drawable.ic_launcher_foreground)
             })
 
-        Row(
-            Modifier
-                .background(Color.LightGray)
+        Card(
+            shape = RoundedCornerShape(10),
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp)
-            ,
-        ) {
-            Image(
-                painter = image,
-                modifier = Modifier
-                    .size(100.dp),
-                alignment = Alignment.Center,
-                contentDescription = title
-            )
-            Text(
-                text = title + "\nPris: ",
-            )
-            Box(modifier = Modifier
-                .size(25.dp)
-                .clip(CircleShape)
-                .background(Color.Red)
-                ){
-                Text( modifier = Modifier
-                    .align(Alignment.TopCenter),
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold,
-                    text = "-",
+                .shadow(
+                    elevation = 10.dp
                 )
+
+        ) {
+            Row(
+                modifier = Modifier.padding(4.dp)
+            ) {
+                Column(
+                    modifier = Modifier,
+                ) {
+                    Image(
+                        painter = image,
+                        modifier = Modifier
+                            .size(100.dp),
+                        alignment = Alignment.Center,
+                        contentDescription = title
+                    )
+                }
+                Column() {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                        ,
+                    ) {
+                        Text(
+                            text = title + "\nPris: ",
+                        )
+                    }
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp),
+                    ){
+                        FloatingActionButton(
+                            modifier = Modifier
+                                .scale(0.5f),
+                            backgroundColor = Color.Red,
+                            onClick = { /*TODO*/ }) {
+                            Icon(Icons.Filled.ArrowUpward, "")
+                        }
+                        FloatingActionButton(
+                            modifier = Modifier
+                                .scale(0.5f),
+                            backgroundColor = Color.Red,
+                            onClick = { /*TODO*/ }) {
+                            Icon(Icons.Filled.ArrowDownward, "")
+                        }
+                    }
+                }
             }
         }
     }
 
+    @Preview
+    @Composable
+    fun ElementInCartPreview(){
+        ElementInCart(imageID = "https://posterlife.dk/wp-content/uploads/2019/05/Levende_soeren_ulrik_thomsen.jpg", "\"Levende · Søren Ulrik Thomsen (1981)\"")
+    }
     suspend fun SyncCart(title: String, viewModel: ContentViewModel) {
         var titles = mutableListOf<String>()
         if (Paper.book().read<List<String>>("Titles") != null) {
