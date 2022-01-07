@@ -307,15 +307,6 @@ class ContentView {
                 modifier = Modifier.padding(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text( modifier = Modifier,
-                    color = Color.DarkGray,
-                    text = "Din indkøbskurv"
-                )
-                Divider(
-                    modifier = Modifier.padding(4.dp),
-                   color = Color.DarkGray,
-                   thickness = 1.dp
-               )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
