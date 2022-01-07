@@ -1,11 +1,14 @@
 package com.example.posterlifeapp
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.AssetManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.TextView
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -34,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
@@ -65,6 +70,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var jsonAssests: AssetManager
     private lateinit var util : Utils
     private val viewModel: ContentViewModel by viewModels()
+    private val title = mutableStateOf("string")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,13 +144,13 @@ class MainActivity : ComponentActivity() {
 
 
             Row(Modifier.fillMaxSize()) {
-
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         maxLines = 1,
-                        text = stringResource(id = R.string.app_name),
-                        fontSize = 24.sp
+                        text = title.value,
+                        fontSize = 24.sp,
+
                     )
 
                 }
@@ -227,12 +233,18 @@ fun NewPosterButton() {
         NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
             composable(NavigationItem.Inspiration.route) {
                 InspirationScreen(jsonAssests, viewModel)
+                title.value = viewModel.titleList[0]
+                Log.d(TAG, "Navigation: ${viewModel.title}")
             }
             composable(NavigationItem.Profile.route) {
                 ProfileScreen()
+                title.value = viewModel.titleList[1]
+                Log.d(TAG, "Navigation: ${viewModel.title}")
             }
             composable(NavigationItem.Share.route) {
                 ShareScreen()
+                title.value = viewModel.titleList[2]
+                Log.d(TAG, "Navigation: ${viewModel.title}")
             }
 
         }
