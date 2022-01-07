@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
     fun MainScreen() {
         val navController = rememberNavController()
         Scaffold(
-            topBar = { TopBar() },
+            topBar = { TopBar(navController) },
             bottomBar = { BottomNaigationBar(navController) },
             floatingActionButton = { NewPosterButton() }
         ) {
@@ -111,7 +111,8 @@ class MainActivity : ComponentActivity() {
 
 
     @Composable
-    fun TopBar() {
+    fun TopBar(navController: NavController) {
+        val context = LocalContext.current
         TopAppBar(
             backgroundColor = MaterialTheme.colors.primary,
             contentColor = Color.White,
@@ -125,7 +126,21 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .background(Color.Transparent, shape = CircleShape)
                         .padding(5.dp, 5.dp, 13.dp, 5.dp)
-                        .clickable { }
+                        .clickable{
+                                navController.navigate(NavigationItem.Cart.route) {
+                                    navController.graph.startDestinationRoute?.let { route ->
+                                        popUpTo(route) {
+                                            saveState = true
+                                        }
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+
+                            }
+                            //val intent = Intent(context, ShoppingCartActivity::class.java)
+                            //context.startActivity(intent)
+
                         .scale(1.5f),
                     contentDescription = "Indkøbskurv")
                 Box(modifier = Modifier
@@ -160,11 +175,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /*
     @Preview(showBackground = true)
     @Composable
-    fun TopBarPreview() {
-        TopBar()
+    fun TopBarPreview(navController: NavController) {
+        TopBar(navController)
     }
+     */
 
     @Composable
     fun BottomNaigationBar(navController: NavController) {
@@ -246,6 +263,9 @@ fun NewPosterButton() {
                 ShareScreen()
                 title.value = viewModel.titleList[2]
                 Log.d(TAG, "Navigation: ${viewModel.title}")
+            }
+            composable(NavigationItem.Cart.route) {
+                DisplayCart(jsonAssests)
             }
 
         }

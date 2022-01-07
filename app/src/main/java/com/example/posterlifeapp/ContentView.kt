@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
@@ -49,6 +51,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.intellij.lang.annotations.JdkConstants
 
 class ContentView {
 }
@@ -87,7 +90,8 @@ class ContentView {
                 placeholder(R.drawable.ic_launcher_foreground)
             })
         var dialogState = remember { mutableStateOf(false) }
-        Column(modifier = Modifier.padding(10.dp)
+        Column(modifier = Modifier
+            .padding(10.dp)
             .clickable { dialogState.value = !dialogState.value }
         ) {
             Image(
@@ -289,6 +293,79 @@ class ContentView {
     @Composable
     fun ShareScreenPreview() {
         ShareScreen()
+    }
+
+    @Composable
+    //@Preview
+    fun DisplayCart(assets: AssetManager){
+        val util = Utils(assets)
+        val posters: List<Poster>
+        util.postersFromAPI()
+        posters = util.posters
+    if(Paper.book().read<List<String>>("Titles")!!.isNotEmpty()){
+            Column(
+                modifier = Modifier.padding(4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text( modifier = Modifier,
+                    color = Color.DarkGray,
+                    text = "Din indkøbskurv"
+                )
+                Divider(
+                    modifier = Modifier.padding(4.dp),
+                   color = Color.DarkGray,
+                   thickness = 1.dp
+               )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(10)),
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    ElementInCart(imageID = posters[0].imageUrl, title = posters[0].title)
+                }
+            }
+        }
+    }
+    @Composable
+    fun ElementInCart(imageID: String, title: String ){
+        val image: Painter = rememberImagePainter(
+            data = imageID,
+            builder = {
+                crossfade(true)
+                placeholder(R.drawable.ic_launcher_foreground)
+            })
+
+        Row(
+            Modifier
+                .background(Color.LightGray)
+                .fillMaxWidth()
+                .padding(4.dp)
+            ,
+        ) {
+            Image(
+                painter = image,
+                modifier = Modifier
+                    .size(100.dp),
+                alignment = Alignment.Center,
+                contentDescription = title
+            )
+            Text(
+                text = title + "\nPris: ",
+            )
+            Box(modifier = Modifier
+                .size(25.dp)
+                .clip(CircleShape)
+                .background(Color.Red)
+                ){
+                Text( modifier = Modifier
+                    .align(Alignment.TopCenter),
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    text = "-",
+                )
+            }
+        }
     }
 
     suspend fun SyncCart(title: String, viewModel: ContentViewModel) {
