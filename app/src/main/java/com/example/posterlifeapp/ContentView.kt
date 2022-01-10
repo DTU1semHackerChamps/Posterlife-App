@@ -19,13 +19,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -40,8 +38,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.SemanticsProperties.EditableText
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -398,6 +400,7 @@ class ContentView {
                 crossfade(true)
                 placeholder(R.drawable.ic_launcher_foreground)
             })
+        val textState = remember { mutableStateOf(TextFieldValue("1")) }
 
         Card(
             shape = RoundedCornerShape(10),
@@ -407,7 +410,6 @@ class ContentView {
                 .shadow(
                     elevation = 10.dp
                 )
-
         ) {
             Row(
                 modifier = Modifier.padding(4.dp)
@@ -442,16 +444,43 @@ class ContentView {
                         FloatingActionButton(
                             modifier = Modifier
                                 .scale(0.5f),
-                            backgroundColor = Color.Red,
-                            onClick = { /*TODO*/ }) {
-                            Icon(Icons.Filled.ArrowUpward, "")
+                            backgroundColor = Color(49,54,57),
+                            onClick = {
+                                var temp = textState.value.text.toInt()
+                                temp--
+                                if(temp >= 0){
+                                    textState.value = TextFieldValue(temp.toString())
+                                }
+
+
+                            }) {
+                            Icon(Icons.Filled.Remove, "",
+                                modifier = Modifier.scale(1.5f),
+                                tint = Color.White
+                            )
                         }
+
+                        TextField(
+                            value = textState.value,
+                            onValueChange = { textState.value = it },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier
+                                .width(55.dp),
+                            singleLine = true
+                        )
                         FloatingActionButton(
                             modifier = Modifier
                                 .scale(0.5f),
-                            backgroundColor = Color.Red,
-                            onClick = { /*TODO*/ }) {
-                            Icon(Icons.Filled.ArrowDownward, "")
+                            backgroundColor = Color(49,54,57),
+                            onClick = {
+                                var temp = textState.value.text.toInt()
+                                temp++
+                                textState.value = TextFieldValue(temp.toString())
+                            }) {
+                            Icon(Icons.Filled.Add, "",
+                                modifier = Modifier.scale(1.5f),
+                                tint = Color.White
+                            )
                         }
                     }
                 }
