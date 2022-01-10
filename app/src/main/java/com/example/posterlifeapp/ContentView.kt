@@ -5,8 +5,10 @@ import android.graphics.Bitmap
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.SharedPreferences
+import android.icu.text.CaseMap
 import android.util.Log
 import android.widget.Space
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -19,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -35,11 +38,14 @@ import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.SemanticsProperties.EditableText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -368,6 +374,7 @@ class ContentView {
         ShareScreen()
     }
 
+    @ExperimentalComposeUiApi
     @Composable
     //@Preview
     fun DisplayCart(assets: AssetManager){
@@ -392,6 +399,7 @@ class ContentView {
         }
     }
 
+    @ExperimentalComposeUiApi
     @Composable
     fun ElementInCart(imageID: String, title: String ){
         val image: Painter = rememberImagePainter(
@@ -460,13 +468,20 @@ class ContentView {
                             )
                         }
 
-                        TextField(
+                        val keyboardController = LocalSoftwareKeyboardController.current
+                        val focusManager = LocalFocusManager.current
+                        OutlinedTextField(
                             value = textState.value,
-                            onValueChange = { textState.value = it },
+                            onValueChange = {
+                                textState.value = it
+                                            },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             modifier = Modifier
                                 .width(55.dp),
-                            singleLine = true
+                            singleLine = true,
+                            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center),
+                            keyboardActions = KeyboardActions(
+                                onDone = {keyboardController?.hide(); focusManager.clearFocus(true)})
                         )
                         FloatingActionButton(
                             modifier = Modifier
@@ -488,6 +503,7 @@ class ContentView {
         }
     }
 
+    @ExperimentalComposeUiApi
     @Preview
     @Composable
     fun ElementInCartPreview(){
