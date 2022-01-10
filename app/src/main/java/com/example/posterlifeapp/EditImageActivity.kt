@@ -50,7 +50,7 @@ class EditImageActivity : Activity() {
         val imageUri = intent.getStringExtra("imageUri")
         path = imageUri
 
-        var imgfile : File = File(path)
+        val imgfile : File = File(path)
 
         if(imgfile.exists())
         {
@@ -59,6 +59,7 @@ class EditImageActivity : Activity() {
         }
 
         inputImageUri=Uri.fromFile(File(path))
+        System.err.println(inputImageUri)
         edit_trial()
         /*
         setContent {
