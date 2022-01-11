@@ -477,9 +477,10 @@ class ContentView {
                                         if (newValue.length <= maxChar) {
                                             textState.value = newValue.filter { it.isDigit() }
                                         }
-
-
-                                            },
+                                        if (newValue.isEmpty()){
+                                            textState.value = "0"
+                                        }
+                                    },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             modifier = Modifier
                                 .width(55.dp),
