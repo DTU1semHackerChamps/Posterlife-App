@@ -128,9 +128,10 @@ class EditImageActivity : Activity() {
         dsPhotoEditorIntent.setData(inputImageUri)
 
         dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "posterlifeapp")
+        val toolsToHide = intArrayOf(DsPhotoEditorActivity.TOOL_ORIENTATION, DsPhotoEditorActivity.TOOL_DRAW, DsPhotoEditorActivity.TOOL_FRAME, DsPhotoEditorActivity.TOOL_PIXELATE, DsPhotoEditorActivity.TOOL_ROUND, DsPhotoEditorActivity.TOOL_STICKER)
 
-        val toolsToHide = arrayOf<Int>(DsPhotoEditorActivity.TOOL_ORIENTATION, DsPhotoEditorActivity.TOOL_CROP)
-
+//        val toolsToHide = arrayOf<Int>(DsPhotoEditorActivity.TOOL_ORIENTATION, DsPhotoEditorActivity.TOOL_CROP)
+//
         dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE, toolsToHide)
         startActivityForResult(dsPhotoEditorIntent, 200)
     }
