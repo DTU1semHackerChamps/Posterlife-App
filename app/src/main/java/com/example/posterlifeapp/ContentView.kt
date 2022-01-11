@@ -26,7 +26,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.filled.ArrowDownward
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -408,7 +408,8 @@ class ContentView {
                 crossfade(true)
                 placeholder(R.drawable.ic_launcher_foreground)
             })
-        val textState = remember { mutableStateOf(TextFieldValue("1")) }
+        val textState = remember { mutableStateOf("1") }
+        val maxChar = 2
 
         Card(
             shape = RoundedCornerShape(10),
@@ -454,10 +455,10 @@ class ContentView {
                                 .scale(0.5f),
                             backgroundColor = Color(49,54,57),
                             onClick = {
-                                var temp = textState.value.text.toInt()
+                                var temp = textState.value.toInt()
                                 temp--
                                 if(temp >= 0){
-                                    textState.value = TextFieldValue(temp.toString())
+                                    textState.value = temp.toString()
                                 }
 
 
@@ -472,8 +473,12 @@ class ContentView {
                         val focusManager = LocalFocusManager.current
                         OutlinedTextField(
                             value = textState.value,
-                            onValueChange = {
-                                textState.value = it
+                            onValueChange = { newValue ->
+                                        if (newValue.length <= maxChar) {
+                                            textState.value = newValue.filter { it.isDigit() }
+                                        }
+
+
                                             },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             modifier = Modifier
@@ -488,9 +493,11 @@ class ContentView {
                                 .scale(0.5f),
                             backgroundColor = Color(49,54,57),
                             onClick = {
-                                var temp = textState.value.text.toInt()
+                                var temp = textState.value.toInt()
                                 temp++
-                                textState.value = TextFieldValue(temp.toString())
+                                if(temp <= 99){
+                                    textState.value = temp.toString()
+                                }
                             }) {
                             Icon(Icons.Filled.Add, "",
                                 modifier = Modifier.scale(1.5f),

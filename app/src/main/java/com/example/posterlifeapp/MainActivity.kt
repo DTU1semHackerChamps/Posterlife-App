@@ -24,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
@@ -73,6 +74,7 @@ class MainActivity : ComponentActivity() {
     private val title = mutableStateOf("string")
     private val cartAmount = mutableStateOf(0)
 
+    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Paper.init(this)
@@ -90,6 +92,7 @@ class MainActivity : ComponentActivity() {
     }
 
 
+    @ExperimentalComposeUiApi
     @Composable
     fun MainScreen() {
         val navController = rememberNavController()
@@ -103,6 +106,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @ExperimentalComposeUiApi
     @Preview(showBackground = true)
     @Composable
     fun MainScreenPreview() {
@@ -246,6 +250,7 @@ fun NewPosterButton() {
     }
 
 
+    @ExperimentalComposeUiApi
     @Composable
     fun Navigation(navController: NavHostController) {
         NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
