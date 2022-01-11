@@ -1,8 +1,15 @@
 package com.example.posterlifeapp
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
@@ -29,6 +36,11 @@ import com.example.composephoto.camera.CameraCapture
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.io.File
+import java.io.FileOutputStream
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
 
 class CameraActivity : ComponentActivity() {
     @ExperimentalCoroutinesApi
@@ -88,9 +100,8 @@ fun MainContent(modifier: Modifier = Modifier){
                     .padding(16.dp),
                 onClick = {
                     val intent = Intent(context,EditImageActivity::class.java)
-                    intent.putExtra("imageUri", imageUri.toString())
+                    intent.putExtra("imageUri", imageUri.path)
                     context.startActivity(intent)
-
                 }
             ) {
                 Text("Continue")
@@ -106,6 +117,7 @@ fun MainContent(modifier: Modifier = Modifier){
         )
     }
 }
+
 @ExperimentalCoilApi
 @Preview(showBackground = true)
 @Composable
