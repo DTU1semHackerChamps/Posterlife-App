@@ -271,6 +271,7 @@ fun NewPosterButton() {
             }
             composable(NavigationItem.Cart.route) {
                 DisplayCart(jsonAssests)
+                title.value = viewModel.titleList[3]
             }
 
         }
