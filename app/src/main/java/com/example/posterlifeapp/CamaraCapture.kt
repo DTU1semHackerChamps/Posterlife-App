@@ -30,12 +30,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.composephoto.util.Permission
 import com.example.posterlifeapp.CameraPreview
+import com.example.posterlifeapp.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import java.io.File
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -98,14 +101,16 @@ fun CameraCapture(
                     .background(
                         Color(0xAF101010)
                     )){
-                    IconButton(modifier = Modifier.align(Alignment.Center).scale(2.5f),onClick = {
+                    IconButton(modifier = Modifier
+                        .align(Alignment.Center)
+                        .scale(1.3f),onClick = {
                         coroutineScope.launch {
                             imageCaptureUseCase.takePicture(context.executor).let {
                                 onImageFile(it)
                             }
                         }
                     }) {
-                        Icon(imageVector = Icons.Filled.Camera, contentDescription = "", tint = Color.White)
+                        Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_union), contentDescription = "", tint = Color.White)
                     }
                 }
 //                Button(

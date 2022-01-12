@@ -1,5 +1,7 @@
 package com.example.posterlifeapp
 
+import android.app.UiModeManager
+import android.app.UiModeManager.MODE_NIGHT_NO
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.ContextWrapper
@@ -13,6 +15,7 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -74,10 +77,14 @@ class MainActivity : ComponentActivity() {
     private val title = mutableStateOf("string")
     private val cartAmount = mutableStateOf(0)
 
+
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         Paper.init(this)
+        val uiModeManager = getSystemService(UI_MODE_SERVICE) as UiModeManager
+        uiModeManager.nightMode = UiModeManager.MODE_NIGHT_NO
 
         setContent {
             jsonAssests = applicationContext.assets
@@ -130,31 +137,34 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .background(Color.Transparent, shape = CircleShape)
                         .padding(5.dp, 5.dp, 13.dp, 5.dp)
-                        .clickable{
-                                navController.navigate(NavigationItem.Cart.route) {
-                                    navController.graph.startDestinationRoute?.let { route ->
-                                        popUpTo(route) {
-                                            saveState = true
-                                        }
+                        .clickable {
+                            navController.navigate(NavigationItem.Cart.route) {
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) {
+                                        saveState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
                                 }
-
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            //val intent = Intent(context, ShoppingCartActivity::class.java)
-                            //context.startActivity(intent)
+
+                        }
+                        //val intent = Intent(context, ShoppingCartActivity::class.java)
+                        //context.startActivity(intent)
 
                         .scale(1.5f),
                     contentDescription = "Indkøbskurv")
-                Box(modifier = Modifier
-                    .size(15.dp)
-                    .clip(CircleShape)
-                    .background(Color.Red)
-                    .align(Alignment.BottomCenter)
-                    .fillMaxSize(),){
-                    Text( modifier = Modifier
-                        .align(Alignment.Center),
+                Box(
+                    modifier = Modifier
+                        .size(15.dp)
+                        .clip(CircleShape)
+                        .background(Color.Red)
+                        .align(Alignment.BottomCenter)
+                        .fillMaxSize(),
+                ){
+                    Text(
+                        modifier = Modifier
+                            .align(Alignment.Center),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         text = cartAmount.value.toString(),
