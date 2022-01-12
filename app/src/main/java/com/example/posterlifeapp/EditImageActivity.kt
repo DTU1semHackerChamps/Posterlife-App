@@ -1,11 +1,13 @@
 package com.example.posterlifeapp
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.compose.foundation.layout.*
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity
@@ -94,6 +96,7 @@ class EditImageActivity : Activity() {
                 {
                     var outputUri: Uri? = data!!.data
                     imgedit.setImageURI(outputUri)
+                    Log.d(TAG, "Uri result: "+ outputUri.toString())
                     val sendBackIntent = Intent(this,CustomPhotoPreviewActivity::class.java)
                     sendBackIntent.putExtra("imageUri",outputUri.toString())
                     this.startActivity(sendBackIntent)

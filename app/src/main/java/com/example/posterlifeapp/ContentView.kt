@@ -27,9 +27,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -37,8 +36,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
@@ -84,7 +81,9 @@ class ContentView {
         util.postersFromAPI()
         posters = util.posters
 
-
+        util.postersFromInternal()
+        TextTabs()
+        /*
         LazyVerticalGrid(
             cells = GridCells.Adaptive(minSize = 180.dp),
         ) {
@@ -98,8 +97,27 @@ class ContentView {
             }
         }
 
+         */
+
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
+    @Composable
+    fun PosterGrid(posters : List<Poster>, viewModel : ContentViewModel)
+    {
+        LazyVerticalGrid(
+            cells = GridCells.Adaptive(minSize = 180.dp),
+        ) {
+            items(posters.size) { index ->
+                SinglePicAndText(
+                    imageID = posters[index].imageUrl,
+                    title = posters[index].title,
+                    price = posters[index].price50x70,
+                    viewModel
+                )
+            }
+        }
+    }
 
     @Composable
     fun SinglePicAndText(imageID: String, title: String, price: Int, viewModel: ContentViewModel) {
@@ -206,6 +224,37 @@ class ContentView {
         }
     }
 
+    @Composable
+    fun TextTabs() {
+        var tabIndex by remember { mutableStateOf(0) }
+        val tabData = listOf(
+            "Inspiration",
+            "Dine Posters"
+        )
+        TabRow(selectedTabIndex = tabIndex,
+            modifier = Modifier.height(40.dp)
+            ) {
+
+            tabData.forEachIndexed { index, text ->
+                Tab(selected = tabIndex == index, onClick = {
+                    tabIndex = index
+                }, text = {
+                    Text(text = text)
+                })
+            }
+
+             /*
+            Tab(selected = tabIndex == 0,
+                onClick = {
+
+                }
+            ) {
+
+            }
+
+              */
+        }
+    }
 
     @Preview(showBackground = true)
     @Composable
@@ -237,25 +286,7 @@ class ContentView {
                     .size(120.dp)
             )
 
-            Spacer(modifier = Modifier.height(80.dp))
-            LazyVerticalGrid(cells = GridCells.Fixed(2),
 
-                )
-            {
-                items(profilesIC.size){ index ->
-                    ProfButton(string = profilesIC[index])
-                }
-            }
-            Spacer(modifier = Modifier.height(50.dp))
-
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                ProfButton(string = "GDPR")
-            }
 
         }
 
@@ -287,25 +318,41 @@ class ContentView {
     }
 
     @Composable
-    fun ProfButton(string: String)
+    fun ProfButtons(string: String)
     {
-        Card(
-            modifier = Modifier
-                .padding(8.dp)
-                .width(180.dp)
-                .height(50.dp)
-                .clickable {
-
-                },
-            elevation = 8.dp,
-            backgroundColor = MaterialTheme.colors.secondary
-        )
+        Row()
         {
-            Text(
-                text = string,
-                modifier = Modifier.padding(13.dp),
-                textAlign = TextAlign.Center
-                )
+            //Person Oplysninger
+            Button(onClick = { /*TODO*/ }) {
+
+            }
+            Spacer(modifier = Modifier.width(4.dp))
+            //Ordrer
+            Button(onClick = { /*TODO*/ }) {
+
+            }
+            Spacer(modifier = Modifier.width(4.dp))
+            //Mine Designs
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Galleri")
+            }
+
+
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Row()
+        {
+            Button(onClick = { /*TODO*/ }) {
+
+            }
+            Spacer(modifier = Modifier.width(4.dp))
+            Button(onClick = { /*TODO*/ }) {
+
+            }
+            Spacer(modifier = Modifier.width(4.dp))
+            Button(onClick = { /*TODO*/ }) {
+
+            }
         }
     }
 
@@ -388,7 +435,7 @@ class ContentView {
     if(Paper.book().read<List<String>>("Titles") != null){
             Column(
                 modifier = Modifier
-                    .padding(4.dp, 4.dp,4.dp,60.dp)
+                    .padding(4.dp, 4.dp, 4.dp, 60.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
