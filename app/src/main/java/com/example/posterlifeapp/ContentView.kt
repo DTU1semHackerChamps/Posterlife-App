@@ -15,6 +15,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
@@ -63,6 +64,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 import java.net.URL
 import io.paperdb.Paper
+import io.paperdb.Paper.book
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -90,6 +92,7 @@ class ContentView {
                 SinglePicAndText(
                     imageID = posters[index].imageUrl,
                     title = posters[index].title,
+                    price = posters[index].price50x70,
                     viewModel
                 )
             }
@@ -99,7 +102,7 @@ class ContentView {
 
 
     @Composable
-    fun SinglePicAndText(imageID: String, title: String, viewModel: ContentViewModel) {
+    fun SinglePicAndText(imageID: String, title: String, price: Int, viewModel: ContentViewModel) {
         val image: Painter = rememberImagePainter(
             data = imageID,
             builder = {
@@ -188,7 +191,7 @@ class ContentView {
                                 onClick = {
                                     GlobalScope.launch(Dispatchers.Main) {
                                         async {
-                                            SyncCart(title, viewModel)
+                                            SyncCart(title, price, imageID, viewModel)
                                         }
                                         dialogState.value = false
                                     }
@@ -384,16 +387,23 @@ class ContentView {
         posters = util.posters
     if(Paper.book().read<List<String>>("Titles")!!.isNotEmpty()){
             Column(
-                modifier = Modifier.padding(4.dp),
+                modifier = Modifier
+                    .padding(4.dp, 4.dp,4.dp,60.dp)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(10)),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    ElementInCart(imageID = posters[0].imageUrl, title = posters[0].title)
+                for(i in 0..Paper.book().read<List<String>>("Titles")!!.size-1){
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(10)),
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        ElementInCart(
+                            imageID = Paper.book().read<List<String>>("imageuris")!![i],
+                            title = Paper.book().read<List<String>>("Titles")!![i],
+                            price = Paper.book().read<List<Int>>("Prices")!![i])
+                    }
                 }
             }
         }
@@ -401,7 +411,7 @@ class ContentView {
 
     @ExperimentalComposeUiApi
     @Composable
-    fun ElementInCart(imageID: String, title: String ){
+    fun ElementInCart(imageID: String, title: String, price: Int ){
         val image: Painter = rememberImagePainter(
             data = imageID,
             builder = {
@@ -442,7 +452,7 @@ class ContentView {
                         ,
                     ) {
                         Text(
-                            text = title + "\nPris: ",
+                            text = title + "\nPris: ${price.toString()}",
                         )
                     }
                     Row(
@@ -511,13 +521,7 @@ class ContentView {
         }
     }
 
-    @ExperimentalComposeUiApi
-    @Preview
-    @Composable
-    fun ElementInCartPreview(){
-        ElementInCart(imageID = "https://posterlife.dk/wp-content/uploads/2019/05/Levende_soeren_ulrik_thomsen.jpg", "\"Levende · Søren Ulrik Thomsen (1981)\"")
-    }
-    suspend fun SyncCart(title: String, viewModel: ContentViewModel) {
+    suspend fun SyncCart(title: String, price: Int, imageID: String, viewModel: ContentViewModel) {
         var titles = mutableListOf<String>()
         if (Paper.book().read<List<String>>("Titles") != null) {
             titles = Paper.book().read<List<String>>("Titles") as MutableList<String>
@@ -527,6 +531,28 @@ class ContentView {
             Paper.book().delete("Titles")
         }
         Paper.book().write("Titles", titles)
+
+
+        var prices = mutableListOf<Int>()
+        if (Paper.book().read<List<Int>>("Prices") != null) {
+            prices = Paper.book().read<List<Int>>("Prices") as MutableList<Int>
+        }
+        prices.add(price)
+        if (Paper.book().read<List<Int>>("Prices") != null) {
+            Paper.book().delete("Prices")
+        }
+        Paper.book().write("Prices", prices)
+
+        var imageuris = mutableListOf<String>()
+        if (Paper.book().read<List<String>>("imageuris") != null) {
+            imageuris = Paper.book().read<List<String>>("imageuris") as MutableList<String>
+        }
+        imageuris.add(imageID)
+        if (Paper.book().read<List<String>>("imageuris") != null) {
+            Paper.book().delete("imageuris")
+        }
+        Paper.book().write("imageuris", imageuris)
+
         viewModel.cartAmount = Paper.book().read<List<String>>("Titles")!!.size
 
 
