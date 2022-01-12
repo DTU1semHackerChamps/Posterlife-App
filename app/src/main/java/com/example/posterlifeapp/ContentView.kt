@@ -385,7 +385,7 @@ class ContentView {
         val posters: List<Poster>
         util.postersFromAPI()
         posters = util.posters
-    if(Paper.book().read<List<String>>("Titles")!!.isNotEmpty()){
+    if(Paper.book().read<List<String>>("Titles") != null){
             Column(
                 modifier = Modifier
                     .padding(4.dp, 4.dp,4.dp,60.dp)
@@ -406,7 +406,21 @@ class ContentView {
                     }
                 }
             }
-        }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp, 0.dp, 0.dp, 100.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,) {
+                Text(
+                    text = "Din indkøbskurv er tom",
+                    textAlign = TextAlign.Center,
+                    fontSize = 30.sp
+                )
+            }
+
+    }
     }
 
     @ExperimentalComposeUiApi
@@ -477,6 +491,7 @@ class ContentView {
                                 modifier = Modifier.scale(1.5f),
                                 tint = Color.White
                             )
+
                         }
 
                         val keyboardController = LocalSoftwareKeyboardController.current
