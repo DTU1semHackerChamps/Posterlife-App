@@ -1,8 +1,15 @@
 package com.example.posterlifeapp
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -16,6 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
@@ -77,24 +85,34 @@ fun MainContent(modifier: Modifier = Modifier){
                 painter = rememberImagePainter(imageUri),
                 contentDescription = "Captured image"
             )
-
-            Button(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(16.dp),
-                onClick = {
-                    val intent = Intent(context, EditImageActivity::class.java)
-                    intent.putExtra("imageUri", imageUri.path)
-                    context.startActivity(intent)
+            Row(Modifier.align(Alignment.BottomCenter).fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Button(
+                    modifier = Modifier
+                        .padding(30.dp)
+                        .width(110.dp),
+                    onClick = {
+                        imageUri = emptyImgURI
+                    },
+                    enabled = true
+                ) {
+                    Text("Retry", fontSize = 15.sp)
                 }
-            ) {
-                Text("Continue")
+                Button(
+                    modifier = Modifier
+                        .padding(30.dp)
+                        .width(110.dp),
+                    onClick = {
+                        val intent = Intent(context,EditImageActivity::class.java)
+                        intent.putExtra("imageUri", imageUri.path)
+                        context.startActivity(intent)
+                    }
+                ) {
+                    Text("Continue", fontSize = 15.sp)
+                }
             }
 
         }
     } else {
-
-
         CameraCapture(
             modifier = modifier,
             onImageFile = { file ->
