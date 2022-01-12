@@ -1,45 +1,29 @@
 package com.example.posterlifeapp
 
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.camera.core.impl.utils.ContextUtil.getApplicationContext
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.ImagePainter.State.Empty.painter
 import coil.compose.rememberImagePainter
 import com.example.composephoto.camera.CameraCapture
+import com.example.posterlifeapp.EditImageActivity
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.io.File
-import java.io.FileOutputStream
-import java.time.LocalDate
-import java.time.ZoneId
 import java.util.*
 
 class CameraActivity : ComponentActivity() {
@@ -99,7 +83,7 @@ fun MainContent(modifier: Modifier = Modifier){
                     .align(Alignment.BottomCenter)
                     .padding(16.dp),
                 onClick = {
-                    val intent = Intent(context,EditImageActivity::class.java)
+                    val intent = Intent(context, EditImageActivity::class.java)
                     intent.putExtra("imageUri", imageUri.path)
                     context.startActivity(intent)
                 }
@@ -109,6 +93,8 @@ fun MainContent(modifier: Modifier = Modifier){
 
         }
     } else {
+
+
         CameraCapture(
             modifier = modifier,
             onImageFile = { file ->
