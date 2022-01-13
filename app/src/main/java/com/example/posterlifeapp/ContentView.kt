@@ -77,12 +77,44 @@ class ContentView {
     fun InspirationScreen(assets: AssetManager, viewModel: ContentViewModel) {
 
         val util = Utils(assets)
-        val posters: List<Poster>
         util.postersFromAPI()
-        posters = util.posters
+        var postersApi: List<Poster> = util.postersFromAPI()
+        var postersInt: List<Poster> = util.postersFromInternal()!!
 
-        util.postersFromInternal()
-        TextTabs()
+        var tabIndex by remember { mutableStateOf(0) }
+        TabRow(selectedTabIndex = tabIndex,
+            modifier = Modifier.height(40.dp)
+        ) {
+
+            Tab(selected = tabIndex == 0,
+                onClick = {
+                    tabIndex = 0
+                },
+
+            ) {
+                Text("Inspiration")
+            }
+            Tab(selected = tabIndex == 1,
+                onClick = {
+                    tabIndex = 1
+                }
+            )
+            {
+                Text("Dine Posters")
+            }
+
+        }
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Spacer(modifier = Modifier.height(40.dp))
+            if(tabIndex == 0) {
+                PosterGrid(posters = postersApi, viewModel = viewModel)
+            } else
+            {
+                PosterGrid(posters = postersInt, viewModel = viewModel)
+            }
+        }
+
         /*
         LazyVerticalGrid(
             cells = GridCells.Adaptive(minSize = 180.dp),
@@ -107,6 +139,7 @@ class ContentView {
     {
         LazyVerticalGrid(
             cells = GridCells.Adaptive(minSize = 180.dp),
+
         ) {
             items(posters.size) { index ->
                 SinglePicAndText(
@@ -221,38 +254,6 @@ class ContentView {
                     }
                 )
             }
-        }
-    }
-
-    @Composable
-    fun TextTabs() {
-        var tabIndex by remember { mutableStateOf(0) }
-        val tabData = listOf(
-            "Inspiration",
-            "Dine Posters"
-        )
-        TabRow(selectedTabIndex = tabIndex,
-            modifier = Modifier.height(40.dp)
-            ) {
-
-            tabData.forEachIndexed { index, text ->
-                Tab(selected = tabIndex == index, onClick = {
-                    tabIndex = index
-                }, text = {
-                    Text(text = text)
-                })
-            }
-
-             /*
-            Tab(selected = tabIndex == 0,
-                onClick = {
-
-                }
-            ) {
-
-            }
-
-              */
         }
     }
 
