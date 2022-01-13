@@ -429,10 +429,6 @@ class ContentView {
     @Composable
     //@Preview
     fun DisplayCart(assets: AssetManager){
-        val util = Utils(assets)
-        val posters: List<Poster>
-        util.postersFromAPI()
-        posters = util.posters
     if(book().read<List<String>>("Titles") != null){
             Column(
                 modifier = Modifier

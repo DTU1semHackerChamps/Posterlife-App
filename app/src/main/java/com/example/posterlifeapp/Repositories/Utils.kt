@@ -41,6 +41,7 @@ class Utils( val assets : AssetManager){
         val js = String(foo)
         val typeToken = object : TypeToken<List<Poster>>() {}.type
 
+        posters = Gson().fromJson(js, typeToken)
         return Gson().fromJson(js, typeToken)
     }
 
