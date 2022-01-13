@@ -433,14 +433,14 @@ class ContentView {
         val posters: List<Poster>
         util.postersFromAPI()
         posters = util.posters
-    if(Paper.book().read<List<String>>("Titles") != null){
+    if(book().read<List<String>>("Titles") != null){
             Column(
                 modifier = Modifier
                     .padding(4.dp, 4.dp, 4.dp, 60.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                for(i in 0..Paper.book().read<List<String>>("Titles")!!.size-1){
+                for(i in 0..book().read<List<String>>("Titles")!!.size-1){
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -448,9 +448,11 @@ class ContentView {
                         horizontalArrangement = Arrangement.Start
                     ) {
                         ElementInCart(
-                            imageID = Paper.book().read<List<String>>("imageuris")!![i],
-                            title = Paper.book().read<List<String>>("Titles")!![i],
-                            price = Paper.book().read<List<Int>>("Prices")!![i])
+                            imageID = book().read<List<String>>("imageuris")!![i],
+                            title = book().read<List<String>>("Titles")!![i],
+                            price = book().read<List<Int>>("Prices")!![i],
+                            quantity = book().read<List<Int>>("Quantity")!![i],
+                            index = i)
                     }
                 }
             }
@@ -473,14 +475,14 @@ class ContentView {
 
     @ExperimentalComposeUiApi
     @Composable
-    fun ElementInCart(imageID: String, title: String, price: Int ){
+    fun ElementInCart(imageID: String, title: String, price: Int, quantity: Int, index: Int){
         val image: Painter = rememberImagePainter(
             data = imageID,
             builder = {
                 crossfade(true)
                 placeholder(R.drawable.ic_launcher_foreground)
             })
-        val textState = remember { mutableStateOf("1") }
+        val textState = remember { mutableStateOf(quantity.toString()) }
         val maxChar = 2
 
         Card(
@@ -496,14 +498,16 @@ class ContentView {
                 modifier = Modifier.padding(4.dp)
             ) {
                 Column(
-                    modifier = Modifier,
+                    modifier = Modifier
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     Image(
-                        painter = image,
-                        modifier = Modifier
-                            .size(100.dp),
-                        alignment = Alignment.Center,
-                        contentDescription = title
+                            painter = image,
+                            modifier = Modifier
+                                .size(100.dp),
+                            alignment = Alignment.Center,
+                            contentDescription = title
                     )
                 }
                 Column() {
@@ -527,10 +531,22 @@ class ContentView {
                                 .scale(0.5f),
                             backgroundColor = Color(49,54,57),
                             onClick = {
+                                var quantity = mutableListOf<Int>()
                                 var temp = textState.value.toInt()
                                 temp--
+
+                                if (book().read<List<Int>>("Quantity") != null) {
+                                    quantity = book().read<List<Int>>("Quantity") as MutableList<Int>
+                                }
+
                                 if(temp >= 0){
                                     textState.value = temp.toString()
+
+                                    if (book().read<List<Int>>("Quantity") != null) {
+                                        book().delete("Quantity")
+                                    }
+                                    quantity[index] = temp
+                                    book().write("Quantity", quantity)
                                 }
 
 
@@ -547,11 +563,30 @@ class ContentView {
                         OutlinedTextField(
                             value = textState.value,
                             onValueChange = { newValue ->
+                                        var quantity = mutableListOf<Int>()
+                                        if (book().read<List<Int>>("Quantity") != null) {
+                                             quantity = book().read<List<Int>>("Quantity") as MutableList<Int>
+                                        }
                                         if (newValue.length <= maxChar) {
                                             textState.value = newValue.filter { it.isDigit() }
+
+                                            if (book().read<List<Int>>("Quantity") != null) {
+                                                book().delete("Quantity")
+                                            }
+                                            if(newValue != ""){
+                                                newValue.removePrefix("0")
+                                                quantity[index] = newValue.toInt()
+                                                book().write("Quantity", quantity)
+                                            }
+
                                         }
                                         if (newValue.isEmpty()){
                                             textState.value = "0"
+                                            if (book().read<List<Int>>("Quantity") != null) {
+                                                book().delete("Quantity")
+                                            }
+                                            quantity[index] = 0
+                                            book().write("Quantity", quantity)
                                         }
                                     },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -567,10 +602,22 @@ class ContentView {
                                 .scale(0.5f),
                             backgroundColor = Color(49,54,57),
                             onClick = {
+                                var quantity = mutableListOf<Int>()
                                 var temp = textState.value.toInt()
                                 temp++
+
+                                if (book().read<List<Int>>("Quantity") != null) {
+                                    quantity = book().read<List<Int>>("Quantity") as MutableList<Int>
+                                }
+
                                 if(temp <= 99){
                                     textState.value = temp.toString()
+
+                                    if (book().read<List<Int>>("Quantity") != null) {
+                                        book().delete("Quantity")
+                                    }
+                                    quantity[index] = temp
+                                    book().write("Quantity", quantity)
                                 }
                             }) {
                             Icon(Icons.Filled.Add, "",
@@ -585,41 +632,71 @@ class ContentView {
     }
 
     suspend fun SyncCart(title: String, price: Int, imageID: String, viewModel: ContentViewModel) {
+        var alreadyInCart = false
         var titles = mutableListOf<String>()
-        if (Paper.book().read<List<String>>("Titles") != null) {
-            titles = Paper.book().read<List<String>>("Titles") as MutableList<String>
+        if (book().read<List<String>>("Titles") != null) {
+            titles = book().read<List<String>>("Titles") as MutableList<String>
         }
-        titles.add(title)
-        if (Paper.book().read<List<String>>("Titles") != null) {
-            Paper.book().delete("Titles")
+
+        var quantity = mutableListOf<Int>()
+        if (book().read<List<Int>>("Quantity") != null) {
+            quantity = book().read<List<Int>>("Quantity") as MutableList<Int>
         }
-        Paper.book().write("Titles", titles)
+
+        for(i in 0 until titles.size){
+            if (titles != null){
+                if (title == titles[i]){
+                    quantity[i] = quantity[i]+1
+                    if (book().read<List<Int>>("Quantity") != null) {
+                        book().delete("Quantity")
+                    }
+                    book().write("Quantity", quantity)
+                    alreadyInCart = true
+                }
+            }
+        }
+
+        if(!alreadyInCart){
+            titles.add(title)
+            if (book().read<List<String>>("Titles") != null) {
+                book().delete("Titles")
+            }
+            book().write("Titles", titles)
 
 
-        var prices = mutableListOf<Int>()
-        if (Paper.book().read<List<Int>>("Prices") != null) {
-            prices = Paper.book().read<List<Int>>("Prices") as MutableList<Int>
-        }
-        prices.add(price)
-        if (Paper.book().read<List<Int>>("Prices") != null) {
-            Paper.book().delete("Prices")
-        }
-        Paper.book().write("Prices", prices)
+            var prices = mutableListOf<Int>()
+            if (book().read<List<Int>>("Prices") != null) {
+                prices = book().read<List<Int>>("Prices") as MutableList<Int>
+            }
+            prices.add(price)
+            if (book().read<List<Int>>("Prices") != null) {
+                book().delete("Prices")
+            }
+            book().write("Prices", prices)
 
-        var imageuris = mutableListOf<String>()
-        if (Paper.book().read<List<String>>("imageuris") != null) {
-            imageuris = Paper.book().read<List<String>>("imageuris") as MutableList<String>
+            var imageuris = mutableListOf<String>()
+            if (book().read<List<String>>("imageuris") != null) {
+                imageuris = book().read<List<String>>("imageuris") as MutableList<String>
+            }
+            imageuris.add(imageID)
+            if (book().read<List<String>>("imageuris") != null) {
+                book().delete("imageuris")
+            }
+            book().write("imageuris", imageuris)
+
+            quantity.add(1)
+            if (book().read<List<Int>>("Quantity") != null) {
+                book().delete("Quantity")
+            }
+            book().write("Quantity", quantity)
+
         }
-        imageuris.add(imageID)
-        if (Paper.book().read<List<String>>("imageuris") != null) {
-            Paper.book().delete("imageuris")
-        }
-        Paper.book().write("imageuris", imageuris)
 
-        viewModel.cartAmount = Paper.book().read<List<String>>("Titles")!!.size
+        viewModel.cartAmount = book().read<List<String>>("Titles")!!.size
 
-
-        val hej = Paper.book().read<List<String>>("Titles")
+        val hej = book().read<List<String>>("Titles")
+        val hej1 = book().read<List<Int>>("Quantity")
         Log.d(TAG, "SyncCart: $hej")
+        Log.d(TAG, "SyncCart: $hej1")
     }
 
