@@ -1,4 +1,4 @@
-package com.example.posterlifeapp.profileComposeables
+package com.example.posterlifeapp.ui.theme
 
 import android.os.Bundle
 import android.widget.Toast
@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.posterlifeapp.profileComposeables.ui.theme.PosterLifeAppTheme
+import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 
 class profileContView {
 
