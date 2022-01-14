@@ -20,4 +20,5 @@
     <string name="title_activity_shopping_cart">ShoppingCartActivity</string>
     <string name="img_folder_name">Posterlife</string>
     <string name="title_activity_custom_photo_preview">CustomPhotoPreviewActivity</string>
+    <string name="title_activity_profile_cont_view">profileContView</string>
 </resources>
