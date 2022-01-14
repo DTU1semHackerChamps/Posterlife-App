@@ -18,5 +18,6 @@
     <string name="title_activity_camera">CameraActivity</string>
     <string name="title_activity_edit_image">EditImageActivity</string>
     <string name="title_activity_shopping_cart">ShoppingCartActivity</string>
+    <string name="img_folder_name">Posterlife</string>
     <string name="title_activity_custom_photo_preview">CustomPhotoPreviewActivity</string>
 </resources>
