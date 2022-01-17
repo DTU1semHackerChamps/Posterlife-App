@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
-import androidx.compose.foundation.layout.*
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants
 import java.io.File
@@ -40,7 +39,7 @@ class EditImageActivity : Activity() {
 
         inputImageUri=Uri.fromFile(File(path))
 
-        edit_trial()
+        startEditing()
 
 
         /*
@@ -107,9 +106,12 @@ class EditImageActivity : Activity() {
         }
     }
 
-    //hello world
+    /**
+     * function for starting the editing API
+     * also calls functions for customizing the UI
+     */
     @SuppressLint("ResourceType")
-    public fun edit_trial()
+    fun startEditing()
     {
         var dsPhotoEditorIntent : Intent = Intent(this,DsPhotoEditorActivity::class.java)
         dsPhotoEditorIntent.setData(inputImageUri)
