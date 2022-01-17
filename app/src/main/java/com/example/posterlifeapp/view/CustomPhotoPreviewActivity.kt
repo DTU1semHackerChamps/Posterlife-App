@@ -1,4 +1,4 @@
-package com.example.posterlifeapp
+package com.example.posterlifeapp.view
 
 import android.content.Intent
 import android.net.Uri
@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
+import com.example.posterlifeapp.view.MainActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 class CustomPhotoPreviewActivity : ComponentActivity() {
@@ -40,7 +41,7 @@ class CustomPhotoPreviewActivity : ComponentActivity() {
 fun PreviewPhoto(imageUri: Uri)
 {
     val context = LocalContext.current
-    val sendBackIntent = Intent(context,MainActivity::class.java)
+    val sendBackIntent = Intent(context, MainActivity::class.java)
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally

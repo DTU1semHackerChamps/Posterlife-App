@@ -1,4 +1,6 @@
-package com.example.posterlifeapp
+package com.example.posterlifeapp.viewModel
+
+import com.example.posterlifeapp.R
 
 sealed class NavigationItem(var route: String, var icon: Int, var title: String){
     object Inspiration : NavigationItem("inspiration", R.drawable.ic_lightbulb_black_24dp, "Inspiration")

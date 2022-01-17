@@ -33,7 +33,7 @@
             android:label="@string/title_activity_shopping_cart"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity
-            android:name=".EditImageActivity"
+            android:name=".viewModel.EditImageActivity"
             android:exported="true"
             android:label="@string/title_activity_edit_image"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />

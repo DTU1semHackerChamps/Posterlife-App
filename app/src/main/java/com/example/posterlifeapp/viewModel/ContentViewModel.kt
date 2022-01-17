@@ -1,4 +1,4 @@
-package com.example.posterlifeapp
+package com.example.posterlifeapp.viewModel
 
 import androidx.lifecycle.ViewModel
 
