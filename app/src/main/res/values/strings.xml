@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PosterLifeApp</string>
+    <string name="app_name">E3-PosterLife</string>
     <string name="login">LOGIN</string>
     <string name="registrer">REGISTRER</string>
     <string name="logowithwhitebackground">LogoWithWhiteBackground</string>
