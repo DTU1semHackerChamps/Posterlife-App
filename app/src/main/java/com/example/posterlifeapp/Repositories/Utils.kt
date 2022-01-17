@@ -50,7 +50,7 @@ class Utils( val assets : AssetManager){
     {
         val posterFileArray: Array<File>?
         var posterList = mutableListOf<Poster>()
-        val directory = File("/sdcard/Pictures/posterlifeapp")
+        val directory = File("/sdcard/Pictures/Posterlife")
         Log.d(TAG, "postersFromInternal: $directory")
 
         if(directory.exists())
