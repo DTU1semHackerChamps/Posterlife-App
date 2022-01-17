@@ -1,17 +1,24 @@
-package com.example.posterlifeapp.view
+package com.example.posterlifeapp
 
 import android.app.UiModeManager
+import android.app.UiModeManager.MODE_NIGHT_NO
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.AssetManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -25,27 +32,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toUri
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.posterlifeapp.R
 import com.example.posterlifeapp.Repositories.Utils
-import com.example.posterlifeapp.viewModel.NavigationItem
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
+import com.example.composephoto.camera.CameraCapture
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
-import com.example.posterlifeapp.viewModel.CameraActivity
-import com.example.posterlifeapp.viewModel.ContentViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import io.paperdb.Paper
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 typealias LumaListener = (luma: Double) -> Unit
 
@@ -233,7 +252,7 @@ fun NewPosterButton() {
     ExtendedFloatingActionButton(
         text = { Text(text = "Ny Plakat") },
         onClick = {
-            context.startActivity(Intent(context, CameraActivity::class.java))
+            context.startActivity(Intent(context,CameraActivity::class.java))
         },
         icon = { Icon(Icons.Filled.Add, "") }
     )

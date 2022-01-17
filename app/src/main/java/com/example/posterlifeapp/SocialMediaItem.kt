@@ -1,6 +1,4 @@
-package com.example.posterlifeapp.viewModel
-
-import com.example.posterlifeapp.R
+package com.example.posterlifeapp
 
 sealed class SocialMediaItem(var route: String, var icon: Int, var title: String)
 {

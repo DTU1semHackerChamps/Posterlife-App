@@ -1,8 +1,15 @@
-package com.example.posterlifeapp.viewModel
+package com.example.posterlifeapp
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -21,11 +28,11 @@ import androidx.core.net.toUri
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.composephoto.camera.CameraCapture
-import com.example.posterlifeapp.R
-import com.example.posterlifeapp.viewModel.EditImageActivity
+import com.example.posterlifeapp.EditImageActivity
 import com.example.posterlifeapp.ui.theme.PosterLifeAppTheme
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.*
 
 class CameraActivity : ComponentActivity() {
     @ExperimentalCoroutinesApi
@@ -95,7 +102,7 @@ fun MainContent(modifier: Modifier = Modifier){
                         .padding(30.dp)
                         .width(110.dp),
                     onClick = {
-                        val intent = Intent(context, EditImageActivity::class.java)
+                        val intent = Intent(context,EditImageActivity::class.java)
                         intent.putExtra("imageUri", imageUri.path)
                         context.startActivity(intent)
                     }
