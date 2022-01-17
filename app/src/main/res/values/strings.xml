@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PosterLifeApp</string>
+    <string name="app_name">E3-PosterLife</string>
     <string name="login">LOGIN</string>
     <string name="registrer">REGISTRER</string>
     <string name="logowithwhitebackground">LogoWithWhiteBackground</string>
@@ -18,5 +18,7 @@
     <string name="title_activity_camera">CameraActivity</string>
     <string name="title_activity_edit_image">EditImageActivity</string>
     <string name="title_activity_shopping_cart">ShoppingCartActivity</string>
+    <string name="img_folder_name">Posterlife</string>
     <string name="title_activity_custom_photo_preview">CustomPhotoPreviewActivity</string>
+    <string name="title_activity_profile_cont_view">profileContView</string>
 </resources>

@@ -1,22 +1,32 @@
 package com.example.posterlifeapp
 
 import android.content.res.AssetManager
+import android.graphics.Bitmap
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.SharedPreferences
+import android.icu.text.CaseMap
 import android.util.Log
+import android.widget.Space
+import android.widget.Toast
 import androidx.compose.foundation.*
+import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 
 import androidx.compose.ui.Alignment
@@ -32,13 +42,18 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.semantics.SemanticsProperties.EditableText
+import androidx.compose.ui.semantics.SemanticsProperties.Text
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
+import com.alorma.compose.settings.ui.SettingsMenuLink
 import com.example.posterlifeapp.Repositories.Utils
 import com.example.posterlifeapp.model.Poster
 import io.paperdb.Paper.book
@@ -245,18 +260,11 @@ class ContentView {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun ProfileScreen() {
-        val profilesIC = listOf(
-            "Person Oplysninger",
-            "Ordrer",
-            "Mine Designs",
-            "Betalingsoplysninger"
-        )
-
         Column(
             modifier =  Modifier
                 .fillMaxWidth()
         ) {
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             Icon(
                 painter = painterResource(id = R.drawable.ic_posterlife_logo_sort_svg),
                 contentDescription = "Profile Picture",
@@ -264,74 +272,35 @@ class ContentView {
                     .align(alignment = Alignment.CenterHorizontally)
                     .size(120.dp)
             )
+            Spacer(modifier = Modifier.height(15.dp))
+            Divider(modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.height(8.dp))
 
+            // SettingsMenuLink comes from:
+            // implementation("com.github.alorma:compose-settings-ui:0.7.2")
+            SettingsMenuLink(
+                title = {
+                    Text(text = "Person Oplysninger")
 
+                },
+                icon = { Icon(
+                    imageVector = Icons.Filled.Person,
+                    contentDescription = " "
+                ) },
+                onClick = {})
+            SettingsMenuLink(title = { Text(text =  "Ordrer") },
+                icon = { Icon(
+                    imageVector = Icons.Filled.Inventory2,
+                    contentDescription = " "
+                ) },
+                onClick = {})
+            SettingsMenuLink(title = { Text(text =  "Betalingsoplysninger") },
+                icon = { Icon(
+                    imageVector = Icons.Filled.AccountBalanceWallet,
+                    contentDescription = " "
+                ) },
+                onClick = {})
 
-        }
-
-
-        /*
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(15.dp),
-            horizontalAlignment = Alignment.Start
-
-        ) {
-            Divider(
-                thickness = 2.dp,
-                color = Color.Gray
-            )
-            profilesIC.forEach { item ->
-                Text(text = item, Modifier.padding(start = 10.dp))
-
-                Divider(
-                    thickness = 2.dp,
-                    color = Color.Gray
-                )
-            }
-        }
-
-         */
-    }
-
-    @Composable
-    fun ProfButtons(string: String)
-    {
-        Row()
-        {
-            //Person Oplysninger
-            Button(onClick = { /*TODO*/ }) {
-
-            }
-            Spacer(modifier = Modifier.width(4.dp))
-            //Ordrer
-            Button(onClick = { /*TODO*/ }) {
-
-            }
-            Spacer(modifier = Modifier.width(4.dp))
-            //Mine Designs
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "Galleri")
-            }
-
-
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        Row()
-        {
-            Button(onClick = { /*TODO*/ }) {
-
-            }
-            Spacer(modifier = Modifier.width(4.dp))
-            Button(onClick = { /*TODO*/ }) {
-
-            }
-            Spacer(modifier = Modifier.width(4.dp))
-            Button(onClick = { /*TODO*/ }) {
-
-            }
         }
     }
 
@@ -344,34 +313,59 @@ class ContentView {
     @Composable
     fun ShareScreen() {
 
-        val itemsIC = listOf(
-            SocialMediaItem.FacebookIC,
-            SocialMediaItem.TwitterIC,
-            SocialMediaItem.Pinterest,
-            SocialMediaItem.InstagramIC,
-            SocialMediaItem.Email
-        )
-
         Column(
-            modifier = Modifier
+            modifier =  Modifier
                 .fillMaxWidth()
-                .padding(top = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(15.dp),
-            horizontalAlignment = Alignment.Start
         ) {
-
-            Divider(
-                thickness = 2.dp,
-                color = Color.Gray
+            Spacer(modifier = Modifier.height(10.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.ic_posterlife_logo_sort_svg),
+                contentDescription = "Profile Picture",
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterHorizontally)
+                    .size(120.dp)
             )
-            itemsIC.forEach { item ->
+            Spacer(modifier = Modifier.height(15.dp))
+            Divider(modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.height(8.dp))
 
-                SocialList(id = item.icon, name = item.title)
-                Divider(
-                    thickness = 2.dp,
-                    color = Color.Gray
-                )
-            }
+            // SettingsMenuLink comes from:
+            // implementation("com.github.alorma:compose-settings-ui:0.7.2")
+            SettingsMenuLink(
+                title = {
+                    Text(text = "Facebook")
+
+                },
+                icon = { Icon(
+                    imageVector = Icons.Filled.Facebook,
+                    contentDescription = " "
+                ) },
+                onClick = {})
+            SettingsMenuLink(title = { Text(text =  "Pinterest") },
+                icon = { Icon(
+                    painter = painterResource(id = R.drawable.ic_iconmonstr_pinterest_1),
+                    contentDescription = null // decorative element
+
+                ) },
+                onClick = {})
+            SettingsMenuLink(title = { Text(text =  "Twitter") },
+                icon = { Icon(
+                    painter = painterResource(id = R.drawable.ic_iconmonstr_twitter_1),
+                    contentDescription = null // decorative element"
+                ) },
+                onClick = {})
+            SettingsMenuLink(title = { Text(text =  "Instagram") },
+                icon = { Icon(
+                    painter = painterResource(id = R.drawable.ic_iconmonstr_instagram_11),
+                    contentDescription = null // decorative element"
+                ) },
+                onClick = {})
+            SettingsMenuLink(title = { Text(text =  "Email") },
+                icon = { Icon(
+                    imageVector = Icons.Filled.Email,
+                    contentDescription = " "
+                ) },
+                onClick = {})
 
         }
     }
@@ -406,7 +400,7 @@ class ContentView {
     @ExperimentalComposeUiApi
     @Composable
     //@Preview
-    fun DisplayCart(assets: AssetManager){
+    fun DisplayCart(assets: AssetManager, viewModel: ContentViewModel){
     if(book().read<List<String>>("Titles") != null){
             Column(
                 modifier = Modifier
@@ -426,7 +420,8 @@ class ContentView {
                             title = book().read<List<String>>("Titles")!![i],
                             price = book().read<List<Int>>("Prices")!![i],
                             quantity = book().read<List<Int>>("Quantity")!![i],
-                            index = i)
+                            index = i,
+                            viewModel = viewModel)
                     }
                 }
             }
@@ -449,7 +444,7 @@ class ContentView {
 
     @ExperimentalComposeUiApi
     @Composable
-    fun ElementInCart(imageID: String, title: String, price: Int, quantity: Int, index: Int){
+    fun ElementInCart(imageID: String, title: String, price: Int, quantity: Int, index: Int, viewModel: ContentViewModel){
         val image: Painter = rememberImagePainter(
             data = imageID,
             builder = {
@@ -523,6 +518,15 @@ class ContentView {
                                     book().write("Quantity", quantity)
                                 }
 
+                                var cartAmount: Int = 0
+                                if (book().read<List<Int>>("Quantity") != null) {
+                                    for (i in book().read<List<Int>>("Quantity")!!.indices){
+                                        cartAmount += book().read<List<Int>>("Quantity")?.get(i)!!
+                                    }
+                                }
+
+                                viewModel.cartAmount.value = cartAmount
+
 
                             }) {
                             Icon(Icons.Filled.Remove, "",
@@ -593,6 +597,14 @@ class ContentView {
                                     quantity[index] = temp
                                     book().write("Quantity", quantity)
                                 }
+                                var cartAmount: Int = 0
+                                if (book().read<List<Int>>("Quantity") != null) {
+                                    for (i in book().read<List<Int>>("Quantity")!!.indices){
+                                        cartAmount += book().read<List<Int>>("Quantity")?.get(i)!!
+                                    }
+                                }
+
+                                viewModel.cartAmount.value = cartAmount
                             }) {
                             Icon(Icons.Filled.Add, "",
                                 modifier = Modifier.scale(1.5f),
@@ -665,8 +677,14 @@ class ContentView {
             book().write("Quantity", quantity)
 
         }
+        var cartAmount: Int = 0
+        if (book().read<List<Int>>("Quantity") != null) {
+            for (i in book().read<List<Int>>("Quantity")!!.indices){
+                cartAmount += book().read<List<Int>>("Quantity")?.get(i)!!
+            }
+        }
 
-        viewModel.cartAmount = book().read<List<String>>("Titles")!!.size
+        viewModel.cartAmount.value = cartAmount
 
         val hej = book().read<List<String>>("Titles")
         val hej1 = book().read<List<Int>>("Quantity")

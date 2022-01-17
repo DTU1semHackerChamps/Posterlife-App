@@ -11,5 +11,6 @@
     <color name="grey">#FF999999</color>
     <color name="offwhite">#FFfcfcf0</color>
     <color name="invisible">#00fcfcf0</color>
+<!--    <color name="dsTextColor" tools:override="true">#000000</color>-->
     <color name="transgrey">#AF101010</color>
 </resources>

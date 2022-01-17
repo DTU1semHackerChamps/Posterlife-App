@@ -26,6 +26,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -65,6 +66,7 @@ import kotlinx.coroutines.withContext
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import io.paperdb.Paper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlin.math.absoluteValue
 
 typealias LumaListener = (luma: Double) -> Unit
 
@@ -74,8 +76,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var jsonAssests: AssetManager
     private lateinit var util : Utils
     private val viewModel: ContentViewModel by viewModels()
-    private val title = mutableStateOf("string")
-    private val cartAmount = mutableStateOf(0)
 
 
     @ExperimentalComposeUiApi
@@ -93,6 +93,7 @@ class MainActivity : ComponentActivity() {
 //                Surface(color = MaterialTheme.colors.background) {
 //                    Greeting("Android")
 //                }
+
                 MainScreen()
             }
         }
@@ -130,7 +131,6 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.fillMaxWidth()
         ) {
             Box(modifier = Modifier.height(32.dp)) {
-            cartAmount.value = viewModel.cartAmount
             Box( modifier = Modifier
                 .align(Alignment.TopEnd)) {
                 Image(painter = painterResource(id = R.drawable.ic_shopping_cart_white_24dp),
@@ -167,7 +167,7 @@ class MainActivity : ComponentActivity() {
                             .align(Alignment.Center),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        text = cartAmount.value.toString(),
+                        text = viewModel.cartAmount.value.toString(),
                     )
                 }
             }
@@ -178,7 +178,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         maxLines = 1,
-                        text = title.value,
+                        text = viewModel.title.value,
                         fontSize = 24.sp,
 
                     )
@@ -266,22 +266,22 @@ fun NewPosterButton() {
         NavHost(navController, startDestination = NavigationItem.Inspiration.route) {
             composable(NavigationItem.Inspiration.route) {
                 InspirationScreen(jsonAssests, viewModel)
-                title.value = viewModel.titleList[0]
+                viewModel.title.value = viewModel.titleList[0]
                 Log.d(TAG, "Navigation: ${viewModel.title}")
             }
             composable(NavigationItem.Profile.route) {
                 ProfileScreen()
-                title.value = viewModel.titleList[1]
+                viewModel.title.value = viewModel.titleList[1]
                 Log.d(TAG, "Navigation: ${viewModel.title}")
             }
             composable(NavigationItem.Share.route) {
                 ShareScreen()
-                title.value = viewModel.titleList[2]
+                viewModel.title.value = viewModel.titleList[2]
                 Log.d(TAG, "Navigation: ${viewModel.title}")
             }
             composable(NavigationItem.Cart.route) {
-                DisplayCart(jsonAssests)
-                title.value = viewModel.titleList[3]
+                DisplayCart(jsonAssests, viewModel)
+                viewModel.title.value = viewModel.titleList[3]
             }
 
         }

@@ -3,13 +3,40 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/activity_main2.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/test.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/testlayout.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/harzz/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/imageediting.xml" value="0.2695035460992908" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/libs/temfolder/res/layout/activity_ds_photo_editor.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/libs/tempfolder/res/layout/activity_ds_photo_editor.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/back_arrow.xml" value="0.11574074074074074" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/contrast.xml" value="0.11574074074074074" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/crop.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/dark_crop.xml" value="0.11851851851851852" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/done.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/exposure.xml" value="0.11574074074074074" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/filter.xml" value="0.11574074074074074" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic__561420_crop_icon.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic__781833_filter_filters_funnel_list_navigation_icon.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_arrow_back_black_24dp.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_baseline_crop_24.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_baseline_filter_b_and_w_24.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_close_black_24dp.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_iconmonstr_email_2.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_iconmonstr_instagram_11.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_iconmonstr_pinterest_1.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_iconmonstr_twitter_1.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_lightbulb_black_24dp.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_person_black_24dp.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_posterlife_logo_sort_svg.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_share_black_24dp.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/ic_shopping_cart_white_24dp.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/saturation.xml" value="0.11574074074074074" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/drawable/text.xml" value="0.11574074074074074" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/activity_ds_photo_editor.xml" value="0.67" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/imageediting.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Stig/AndroidStudioProjects/Posterlife-App/app/src/main/res/layout/test.xml" value="0.25" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
