@@ -312,34 +312,59 @@ class ContentView {
     @Composable
     fun ShareScreen() {
 
-        val itemsIC = listOf(
-            SocialMediaItem.FacebookIC,
-            SocialMediaItem.TwitterIC,
-            SocialMediaItem.Pinterest,
-            SocialMediaItem.InstagramIC,
-            SocialMediaItem.Email
-        )
-
         Column(
-            modifier = Modifier
+            modifier =  Modifier
                 .fillMaxWidth()
-                .padding(top = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(15.dp),
-            horizontalAlignment = Alignment.Start
         ) {
-
-            Divider(
-                thickness = 2.dp,
-                color = Color.Gray
+            Spacer(modifier = Modifier.height(10.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.ic_posterlife_logo_sort_svg),
+                contentDescription = "Profile Picture",
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterHorizontally)
+                    .size(120.dp)
             )
-            itemsIC.forEach { item ->
+            Spacer(modifier = Modifier.height(15.dp))
+            Divider(modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.height(8.dp))
 
-                SocialList(id = item.icon, name = item.title)
-                Divider(
-                    thickness = 2.dp,
-                    color = Color.Gray
-                )
-            }
+            // SettingsMenuLink comes from:
+            // implementation("com.github.alorma:compose-settings-ui:0.7.2")
+            SettingsMenuLink(
+                title = {
+                    Text(text = "Facebook")
+
+                },
+                icon = { Icon(
+                    imageVector = Icons.Filled.Facebook,
+                    contentDescription = " "
+                ) },
+                onClick = {})
+            SettingsMenuLink(title = { Text(text =  "Pinterest") },
+                icon = { Icon(
+                    painter = painterResource(id = R.drawable.ic_iconmonstr_pinterest_1),
+                    contentDescription = null // decorative element
+
+                ) },
+                onClick = {})
+            SettingsMenuLink(title = { Text(text =  "Twitter") },
+                icon = { Icon(
+                    painter = painterResource(id = R.drawable.ic_iconmonstr_twitter_1),
+                    contentDescription = null // decorative element"
+                ) },
+                onClick = {})
+            SettingsMenuLink(title = { Text(text =  "Instagram") },
+                icon = { Icon(
+                    painter = painterResource(id = R.drawable.ic_iconmonstr_instagram_11),
+                    contentDescription = null // decorative element"
+                ) },
+                onClick = {})
+            SettingsMenuLink(title = { Text(text =  "Email") },
+                icon = { Icon(
+                    imageVector = Icons.Filled.Email,
+                    contentDescription = " "
+                ) },
+                onClick = {})
 
         }
     }
