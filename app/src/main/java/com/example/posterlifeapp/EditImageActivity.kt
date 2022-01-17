@@ -107,6 +107,7 @@ class EditImageActivity : Activity() {
         }
     }
 
+    //hello world
     @SuppressLint("ResourceType")
     public fun edit_trial()
     {
