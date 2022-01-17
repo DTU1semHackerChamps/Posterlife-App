@@ -50,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.alorma.compose.settings.ui.SettingsMenuLink
@@ -399,7 +400,7 @@ class ContentView {
     @ExperimentalComposeUiApi
     @Composable
     //@Preview
-    fun DisplayCart(assets: AssetManager){
+    fun DisplayCart(assets: AssetManager, viewModel: ContentViewModel){
     if(book().read<List<String>>("Titles") != null){
             Column(
                 modifier = Modifier
@@ -419,7 +420,8 @@ class ContentView {
                             title = book().read<List<String>>("Titles")!![i],
                             price = book().read<List<Int>>("Prices")!![i],
                             quantity = book().read<List<Int>>("Quantity")!![i],
-                            index = i)
+                            index = i,
+                            viewModel = viewModel)
                     }
                 }
             }
@@ -442,7 +444,7 @@ class ContentView {
 
     @ExperimentalComposeUiApi
     @Composable
-    fun ElementInCart(imageID: String, title: String, price: Int, quantity: Int, index: Int){
+    fun ElementInCart(imageID: String, title: String, price: Int, quantity: Int, index: Int, viewModel: ContentViewModel){
         val image: Painter = rememberImagePainter(
             data = imageID,
             builder = {
@@ -516,6 +518,15 @@ class ContentView {
                                     book().write("Quantity", quantity)
                                 }
 
+                                var cartAmount: Int = 0
+                                if (book().read<List<Int>>("Quantity") != null) {
+                                    for (i in book().read<List<Int>>("Quantity")!!.indices){
+                                        cartAmount += book().read<List<Int>>("Quantity")?.get(i)!!
+                                    }
+                                }
+
+                                viewModel.cartAmount.value = cartAmount
+
 
                             }) {
                             Icon(Icons.Filled.Remove, "",
@@ -586,6 +597,14 @@ class ContentView {
                                     quantity[index] = temp
                                     book().write("Quantity", quantity)
                                 }
+                                var cartAmount: Int = 0
+                                if (book().read<List<Int>>("Quantity") != null) {
+                                    for (i in book().read<List<Int>>("Quantity")!!.indices){
+                                        cartAmount += book().read<List<Int>>("Quantity")?.get(i)!!
+                                    }
+                                }
+
+                                viewModel.cartAmount.value = cartAmount
                             }) {
                             Icon(Icons.Filled.Add, "",
                                 modifier = Modifier.scale(1.5f),
@@ -658,8 +677,14 @@ class ContentView {
             book().write("Quantity", quantity)
 
         }
+        var cartAmount: Int = 0
+        if (book().read<List<Int>>("Quantity") != null) {
+            for (i in book().read<List<Int>>("Quantity")!!.indices){
+                cartAmount += book().read<List<Int>>("Quantity")?.get(i)!!
+            }
+        }
 
-        viewModel.cartAmount = book().read<List<String>>("Titles")!!.size
+        viewModel.cartAmount.value = cartAmount
 
         val hej = book().read<List<String>>("Titles")
         val hej1 = book().read<List<Int>>("Quantity")
