@@ -124,7 +124,6 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun TopBar(navController: NavController) {
-        val context = LocalContext.current
         TopAppBar(
             backgroundColor = MaterialTheme.colors.primary,
             contentColor = Color.White,

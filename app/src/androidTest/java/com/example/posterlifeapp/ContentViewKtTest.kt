@@ -1,5 +1,9 @@
 package com.example.posterlifeapp
 
+import androidx.activity.viewModels
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.test.core.app.ApplicationProvider
 import io.paperdb.Paper
 import io.paperdb.Paper.book
@@ -17,6 +21,7 @@ class ContentViewKtTest : TestCase() {
     fun testSyncCart() {
         Paper.init(ApplicationProvider.getApplicationContext())
         Paper.book().destroy()
+        val contentViewModel = ContentViewModel()
 
         GlobalScope.launch(Dispatchers.Main) {
             async {
@@ -24,7 +29,7 @@ class ContentViewKtTest : TestCase() {
                     "Levende · Søren Ulrik Thomsen (1981)",
                     249,
                     "https://posterlife.dk/wp-content/uploads/2019/05/Levende_soeren_ulrik_thomsen.jpg",
-                    ContentViewModel()
+                    contentViewModel
                 )
 
                 assertEquals("Levende · Søren Ulrik Thomsen (1981)",book().read<List<String>>("Titles")!![0])
@@ -36,10 +41,11 @@ class ContentViewKtTest : TestCase() {
                     "Levende · Søren Ulrik Thomsen (1981)",
                     249,
                     "https://posterlife.dk/wp-content/uploads/2019/05/Levende_soeren_ulrik_thomsen.jpg",
-                    ContentViewModel()
+                    contentViewModel
                 )
 
                 assertEquals(2,book().read<List<Int>>("Quantity")!![0])
+                assertEquals(mutableStateOf(2).value,contentViewModel.cartAmount.value)
 
 
                 assertNotEquals("hej",book().read<List<String>>("Titles")!![0])
