@@ -31,6 +31,9 @@ class Utils( val assets : AssetManager){
 
     lateinit var posters : List<Poster>
 
+    /**
+     * taken from https://kotlinlang.org/docs/serialization.html
+     */
     fun postersFromAPI(): List<Poster>
     {
         val jsonString = assets.open("posterlife.json")

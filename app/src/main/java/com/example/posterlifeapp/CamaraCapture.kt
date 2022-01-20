@@ -44,7 +44,10 @@ import java.io.File
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-
+/**
+ * Heavily inspired by David Pisoni's repo
+ * https://github.com/gefilte/compose-photo-integration/tree/step-4-capture-image
+ */
 @ExperimentalPermissionsApi
 @ExperimentalCoroutinesApi
 @Composable
